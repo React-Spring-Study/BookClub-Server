@@ -23,13 +23,13 @@ public class Review {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @JoinColumn(name = "club_id")
+    private Club club;
 
     @Builder
-    public Review(String title, String content, Group group) {
+    public Review(String title, String content, Club club) {
         this.title = title;
         this.content = content;
-        this.group = group;
+        this.club = club;
     }
 }
