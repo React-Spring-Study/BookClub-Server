@@ -42,4 +42,6 @@ public class Member extends BaseTimeEntity{
         this.role = Role.MEMBER;
         this.profileUrl = profileUrl != null ? profileUrl : "noImg";
     }
+
+    // TODO: 유효성 검증은 엔티티가 아닌 DTO에서!!!
 }
