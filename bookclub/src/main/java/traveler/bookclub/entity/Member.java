@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,8 +26,20 @@ public class Member extends BaseTimeEntity{
     private String userId;
     private String password;
     private String email;
+    private String profileUrl;
     @NotNull
     private String emailVerifiedYn;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Builder
+    public Member(String nickname, String userId, String password, String email, String profileUrl) {
+        this.nickname = nickname;
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+        this.emailVerifiedYn = "Y";
+        this.role = Role.MEMBER;
+        this.profileUrl = profileUrl != null ? profileUrl : "noImg";
+    }
 }

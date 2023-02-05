@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "review")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Review {
+public class Review extends BaseTimeEntity{
 
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "review_id")
