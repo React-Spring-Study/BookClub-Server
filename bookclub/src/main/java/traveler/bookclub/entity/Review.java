@@ -22,7 +22,7 @@ public class Review extends BaseTimeEntity{
     @Column(name = "review_content")
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
