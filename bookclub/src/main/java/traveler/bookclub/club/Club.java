@@ -31,12 +31,16 @@ public class Club {
     @Column(name = "club_link")
     private String link;
 
+    @Column(name = "club_img")
+    private String imgUrl;
+
     @Builder
-    public Club(String name, String information, Integer max, String link) {
+    public Club(String name, String information, Integer max, Integer num, String link, String imgUrl) {
         this.name = name;
         this.information = information;
         this.max = max;
-        this.num = 1;
+        this.num = num;
         this.link = link;
+        this.imgUrl = imgUrl;
     }
 }
