@@ -1,4 +1,4 @@
-package traveler.bookclub.entity;
+package traveler.bookclub.club;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
