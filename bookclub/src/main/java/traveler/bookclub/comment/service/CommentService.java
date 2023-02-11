@@ -4,11 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import traveler.bookclub.comment.domain.Comment;
+import traveler.bookclub.comment.dto.CommentResponse;
 import traveler.bookclub.comment.dto.CommentSaveRequest;
 import traveler.bookclub.comment.repository.CommentRepository;
 import traveler.bookclub.review.domain.Review;
 import traveler.bookclub.review.exception.ReviewException;
 import traveler.bookclub.review.repository.ReviewRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +33,21 @@ public class CommentService {
                         .build()
         );
         return save.getId();
+    }
+
+    @Transactional
+    public List<CommentResponse> readComments(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewException());
+        List<CommentResponse> response = new ArrayList<>();
+        for (Comment comment : commentRepository.findAllByReview(review)) {
+            CommentResponse commentResponse = new CommentResponse(
+                    comment.getContent(),
+                    comment.getCreatedDate().toString(),
+                    comment.getMember().getNickname()
+            );
+            response.add(commentResponse);
+        }
+        return response;
     }
 }
