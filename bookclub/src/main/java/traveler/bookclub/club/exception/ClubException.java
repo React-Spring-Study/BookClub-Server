@@ -1,4 +1,4 @@
-package traveler.bookclub.club;
+package traveler.bookclub.club.exception;
 
 import lombok.Getter;
 

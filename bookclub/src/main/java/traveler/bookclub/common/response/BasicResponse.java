@@ -1,4 +1,4 @@
-package traveler.bookclub.common;
+package traveler.bookclub.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

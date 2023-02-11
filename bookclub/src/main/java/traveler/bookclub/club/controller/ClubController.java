@@ -1,8 +1,11 @@
-package traveler.bookclub.club;
+package traveler.bookclub.club.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import traveler.bookclub.common.StringResponse;
+import traveler.bookclub.club.service.ClubService;
+import traveler.bookclub.club.dto.ClubInfoResponse;
+import traveler.bookclub.club.dto.ClubSaveRequest;
+import traveler.bookclub.common.response.StringResponse;
 
 @RequestMapping("/club")
 @RequiredArgsConstructor
@@ -11,7 +14,7 @@ public class ClubController {
 
     private final ClubService clubService;
 
-    @PostMapping("/create")
+    @PostMapping
     public StringResponse createClub(@RequestBody ClubSaveRequest request) {
         Long clubId = clubService.createClub(request);
 
