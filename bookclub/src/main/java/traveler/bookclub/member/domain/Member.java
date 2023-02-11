@@ -21,7 +21,7 @@ public class Member extends BaseTimeEntity {
     private String nickname;
 
     @Column(name = "sub", unique = true)
-    private String userId;
+    private String username;
     private String password;
     private String email;
     private String profileUrl;
@@ -31,9 +31,9 @@ public class Member extends BaseTimeEntity {
     private Role role;
 
     @Builder
-    public Member(String nickname, String userId, String password, String email, String profileUrl) {
+    public Member(String nickname, String username, String password, String email, String profileUrl) {
         this.nickname = nickname;
-        this.userId = userId;
+        this.username = username;
         this.password = password;
         this.email = email;
         this.emailVerifiedYn = "Y";
