@@ -2,7 +2,7 @@ package traveler.bookclub.review.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import traveler.bookclub.club.Club;
+import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.entity.BaseTimeEntity;
 
 @Getter

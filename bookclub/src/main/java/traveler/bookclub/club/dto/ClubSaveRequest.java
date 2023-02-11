@@ -1,9 +1,10 @@
-package traveler.bookclub.club;
+package traveler.bookclub.club.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import traveler.bookclub.club.domain.Club;
 
 @Getter
 @AllArgsConstructor

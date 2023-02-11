@@ -1,7 +1,10 @@
-package traveler.bookclub.club;
+package traveler.bookclub.club.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import traveler.bookclub.club.service.ClubService;
+import traveler.bookclub.club.dto.ClubInfoResponse;
+import traveler.bookclub.club.dto.ClubSaveRequest;
 import traveler.bookclub.common.StringResponse;
 
 @RequestMapping("/club")

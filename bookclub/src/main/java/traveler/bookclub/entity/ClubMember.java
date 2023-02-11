@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import traveler.bookclub.club.Club;
+import traveler.bookclub.club.domain.Club;
 
 @Getter
 @Entity
