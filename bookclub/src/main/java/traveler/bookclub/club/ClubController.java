@@ -11,7 +11,7 @@ public class ClubController {
 
     private final ClubService clubService;
 
-    @PostMapping("/create")
+    @PostMapping
     public StringResponse createClub(@RequestBody ClubSaveRequest request) {
         Long clubId = clubService.createClub(request);
 
