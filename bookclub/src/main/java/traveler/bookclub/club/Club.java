@@ -1,10 +1,10 @@
-package traveler.bookclub.entity;
+package traveler.bookclub.club;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import traveler.bookclub.entity.Member;
+
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -28,15 +28,28 @@ public class Club {
     @Column(name = "club_num")
     private Integer num;
 
+    @Setter
     @Column(name = "club_link")
     private String link;
 
+    @Column
+    private String cid;
+
+    @Column(name = "club_img")
+    private String imgUrl;
+
+    @JoinColumn(name = "host_id")
+    @ManyToOne
+    private Member host;
+
     @Builder
-    public Club(String name, String information, Integer max, String link) {
+    public Club(String name, String information, Integer max, Integer num, String imgUrl, Member member) {
         this.name = name;
         this.information = information;
         this.max = max;
-        this.num = 1;
-        this.link = link;
+        this.num = num;
+        this.imgUrl = imgUrl;
+        this.host = member;
+        this.cid = UUID.randomUUID().toString();
     }
 }
