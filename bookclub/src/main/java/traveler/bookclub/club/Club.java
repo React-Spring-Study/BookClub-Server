@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import traveler.bookclub.entity.Member;
 
-import java.util.Random;
 import java.util.UUID;
 
 @Getter
@@ -36,7 +35,7 @@ public class Club {
     private String link;
 
     @Column
-    private String gid;
+    private String cid;
 
     @Column(name = "club_img")
     private String imgUrl;
@@ -54,6 +53,6 @@ public class Club {
         this.link = link;
         this.imgUrl = imgUrl;
         this.host = member;
-        this.gid = UUID.randomUUID().toString();
+        this.cid = UUID.randomUUID().toString();
     }
 }
