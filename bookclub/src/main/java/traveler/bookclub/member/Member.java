@@ -1,4 +1,4 @@
-package traveler.bookclub.entity;
+package traveler.bookclub.member;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -7,22 +7,21 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import traveler.bookclub.entity.BaseTimeEntity;
 
 @Getter
 @Entity
 @Table(name = "member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseTimeEntity{
+public class Member extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "member_id")
     private Long id;
 
-    @NotBlank
     private String nickname;
 
     @Column(name = "sub", unique = true)
-    @NotBlank
     private String userId;
     private String password;
     private String email;

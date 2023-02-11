@@ -1,4 +1,4 @@
-package traveler.bookclub.entity;
+package traveler.bookclub.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
