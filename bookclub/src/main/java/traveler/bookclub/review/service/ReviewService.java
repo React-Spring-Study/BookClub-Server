@@ -25,7 +25,7 @@ public class ReviewService {
                 .orElseThrow(() -> new ClubException());
         Review entity = ReviewSaveRequest.toEntity(request);
         entity.setClub(club);
-        return entity.getId();
+        return reviewRepository.save(entity).getId();
     }
 
     @Transactional

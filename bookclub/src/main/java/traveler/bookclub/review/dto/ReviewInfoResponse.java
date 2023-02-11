@@ -11,7 +11,7 @@ public class ReviewInfoResponse {
     private String title;
     private String content;
     private String isbn;
-
+    //TODO: 작성자 닉네임 추가
     private String createdDate;
 
     public static ReviewInfoResponse of(Review review) {

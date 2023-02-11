@@ -16,9 +16,9 @@ public class ClubController {
 
     @PostMapping
     public StringResponse createClub(@RequestBody ClubSaveRequest request) {
-        Long clubId = clubService.createClub(request);
+        String cid = clubService.createClub(request);
 
-        return new StringResponse("새로운 모임이 결성되었습니다. 클럽 ID=" + clubId.toString());
+        return new StringResponse("새로운 모임이 결성되었습니다. 클럽 ID: " + cid);
     }
 
     @GetMapping("/{cid}")

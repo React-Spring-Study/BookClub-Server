@@ -15,10 +15,15 @@ public class ClubInfoResponse {
     private String hostName;
     private String imgUrl;
 
+    public ClubInfoResponse(String name, String imgUrl) {
+        this.name = name;
+        this.imgUrl = imgUrl;
+    }
+
     public static ClubInfoResponse of(Club club) {
         return new ClubInfoResponse(
                 club.getName(),
-                club.getHost().getNickname(),
+//                club.getHost().getNickname(),
                 club.getImgUrl()
         );
     }

@@ -15,7 +15,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public StringResponse createReview(ReviewSaveRequest request) {
+    public StringResponse createReview(@RequestBody ReviewSaveRequest request) {
         Long reviewId = reviewService.saveReview(request);
         return new StringResponse("리뷰를 성공적으로 저장했습니다. 리뷰 ID: "+reviewId.toString());
     }
