@@ -1,8 +1,11 @@
-package traveler.bookclub.review;
+package traveler.bookclub.review.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.common.StringResponse;
+import traveler.bookclub.review.dto.ReviewInfoResponse;
+import traveler.bookclub.review.dto.ReviewSaveRequest;
+import traveler.bookclub.review.service.ReviewService;
 
 @RequestMapping("/review")
 @RequiredArgsConstructor

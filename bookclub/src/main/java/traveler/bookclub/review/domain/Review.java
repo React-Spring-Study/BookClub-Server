@@ -1,4 +1,4 @@
-package traveler.bookclub.review;
+package traveler.bookclub.review.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

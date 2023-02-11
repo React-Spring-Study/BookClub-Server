@@ -1,4 +1,4 @@
-package traveler.bookclub.review;
+package traveler.bookclub.review.exception;
 
 public class ReviewException extends RuntimeException{
 }

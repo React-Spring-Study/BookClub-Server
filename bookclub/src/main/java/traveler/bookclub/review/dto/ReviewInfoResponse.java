@@ -1,6 +1,7 @@
-package traveler.bookclub.review;
+package traveler.bookclub.review.dto;
 
 import lombok.*;
+import traveler.bookclub.review.domain.Review;
 
 @Getter
 @AllArgsConstructor

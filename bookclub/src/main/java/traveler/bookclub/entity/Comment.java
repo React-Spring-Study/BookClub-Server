@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import traveler.bookclub.review.Review;
+import traveler.bookclub.review.domain.Review;
 
 @Getter
 @Entity

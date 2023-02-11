@@ -1,4 +1,4 @@
-package traveler.bookclub.review;
+package traveler.bookclub.review.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import traveler.bookclub.club.Club;
 import traveler.bookclub.club.ClubException;
 import traveler.bookclub.club.ClubRepository;
+import traveler.bookclub.review.repository.ReviewRepository;
+import traveler.bookclub.review.domain.Review;
+import traveler.bookclub.review.dto.ReviewInfoResponse;
+import traveler.bookclub.review.dto.ReviewSaveRequest;
+import traveler.bookclub.review.exception.ReviewException;
 
 @RequiredArgsConstructor
 @Service

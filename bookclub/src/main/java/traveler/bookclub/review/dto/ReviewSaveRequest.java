@@ -1,9 +1,10 @@
-package traveler.bookclub.review;
+package traveler.bookclub.review.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import traveler.bookclub.review.domain.Review;
 
 @Getter
 @AllArgsConstructor
