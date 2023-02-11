@@ -18,7 +18,7 @@ public class ClubService {
     @Transactional
     public Long createClub(ClubSaveRequest request) {
         Club entity = clubRepository.save(ClubSaveRequest.toEntity(request));
-        entity.setLink(address + "/" + entity.getCid());
+        entity.setLink(address + "/club/" + entity.getCid());
         return entity.getId();
     }
 
