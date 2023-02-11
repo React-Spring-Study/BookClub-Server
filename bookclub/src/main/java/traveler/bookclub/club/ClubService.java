@@ -1,6 +1,7 @@
 package traveler.bookclub.club;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,11 +12,14 @@ import java.util.List;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    @Value("${backend.address}")
+    private String address;
 
     @Transactional
     public Long createClub(ClubSaveRequest request) {
-        Club entity = ClubSaveRequest.toEntity(request);
-        return clubRepository.save(entity).getId();
+        Club entity = clubRepository.save(ClubSaveRequest.toEntity(request));
+        entity.setLink(address + "/" + entity.getCid());
+        return entity.getId();
     }
 
     @Transactional

@@ -1,10 +1,7 @@
 package traveler.bookclub.club;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import traveler.bookclub.entity.Member;
 
 import java.util.UUID;
@@ -31,6 +28,7 @@ public class Club {
     @Column(name = "club_num")
     private Integer num;
 
+    @Setter
     @Column(name = "club_link")
     private String link;
 
@@ -53,7 +51,5 @@ public class Club {
         this.imgUrl = imgUrl;
         this.host = member;
         this.cid = UUID.randomUUID().toString();
-        this.link = "/club"+this.cid;
-        // 주소 가져오기
     }
 }
