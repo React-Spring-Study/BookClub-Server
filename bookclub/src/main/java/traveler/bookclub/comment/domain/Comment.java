@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import traveler.bookclub.entity.BaseTimeEntity;
-import traveler.bookclub.member.Member;
+import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.review.domain.Review;
 
 @Getter
