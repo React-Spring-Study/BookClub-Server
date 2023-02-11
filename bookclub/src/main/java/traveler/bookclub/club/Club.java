@@ -5,6 +5,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import traveler.bookclub.entity.Member;
+
+import java.util.Random;
+import java.util.UUID;
 
 @Getter
 @Entity
@@ -31,16 +35,25 @@ public class Club {
     @Column(name = "club_link")
     private String link;
 
+    @Column
+    private String gid;
+
     @Column(name = "club_img")
     private String imgUrl;
 
+    @JoinColumn(name = "host_id")
+    @ManyToOne
+    private Member host;
+
     @Builder
-    public Club(String name, String information, Integer max, Integer num, String link, String imgUrl) {
+    public Club(String name, String information, Integer max, Integer num, String link, String imgUrl, Member member) {
         this.name = name;
         this.information = information;
         this.max = max;
         this.num = num;
         this.link = link;
         this.imgUrl = imgUrl;
+        this.host = member;
+        this.gid = UUID.randomUUID().toString();
     }
 }

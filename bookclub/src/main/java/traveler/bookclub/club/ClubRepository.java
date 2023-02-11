@@ -5,5 +5,5 @@ import traveler.bookclub.entity.Member;
 
 public interface ClubRepository extends JpaRepository<Club, Long> {
 
-    <Optional>Club findAllByHost(Member member);
+    <Optional>Club findAllByHost(Member host);
 }
