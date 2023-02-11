@@ -43,8 +43,8 @@ public class CommentService {
         for (Comment comment : commentRepository.findAllByReview(review)) {
             CommentResponse commentResponse = new CommentResponse(
                     comment.getContent(),
-                    comment.getCreatedDate().toString(),
-                    comment.getMember().getNickname()
+//                    comment.getMember().getNickname(),
+                    comment.getCreatedDate().toString()
             );
             response.add(commentResponse);
         }

@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentResponse {
     private String content;
-    private String createdDate;
     private String writerName;
+    private String createdDate;
+
+    public CommentResponse(String content, String createdDate) {
+        this.content = content;
+        this.createdDate = createdDate;
+    }
 }
