@@ -22,4 +22,11 @@ public class ReviewService {
         entity.setClub(club);
         return entity.getId();
     }
+
+    @Transactional
+    public ReviewInfoResponse readReviewInfo(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewException());
+        return ReviewInfoResponse.of(review);
+    }
 }
