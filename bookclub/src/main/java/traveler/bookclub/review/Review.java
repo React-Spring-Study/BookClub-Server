@@ -1,10 +1,7 @@
 package traveler.bookclub.review;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import traveler.bookclub.club.Club;
 import traveler.bookclub.entity.BaseTimeEntity;
 
@@ -24,14 +21,18 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_content")
     private String content;
 
+    private String isbn;
+
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
     @Builder
-    public Review(String title, String content, Club club) {
+    public Review(String title, String content, String isbn, Club club) {
         this.title = title;
         this.content = content;
+        this.isbn = isbn;
         this.club = club;
     }
 }
