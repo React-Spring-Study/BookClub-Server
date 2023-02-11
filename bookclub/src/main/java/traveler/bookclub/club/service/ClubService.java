@@ -19,10 +19,10 @@ public class ClubService {
     private String address;
 
     @Transactional
-    public Long createClub(ClubSaveRequest request) {
+    public String createClub(ClubSaveRequest request) {
         Club entity = clubRepository.save(ClubSaveRequest.toEntity(request));
         entity.setLink(address + "/club/" + entity.getCid());
-        return entity.getId();
+        return entity.getCid();
     }
 
     @Transactional

@@ -1,17 +1,19 @@
-package traveler.bookclub.entity;
+package traveler.bookclub.comment.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import traveler.bookclub.entity.BaseTimeEntity;
+import traveler.bookclub.entity.Member;
 import traveler.bookclub.review.domain.Review;
 
 @Getter
 @Entity
 @Table(name = "comment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseTimeEntity{
+public class Comment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

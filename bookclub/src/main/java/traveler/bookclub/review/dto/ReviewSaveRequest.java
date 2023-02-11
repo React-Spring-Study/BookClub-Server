@@ -20,6 +20,7 @@ public class ReviewSaveRequest {
         return Review.builder()
                 .title(request.title)
                 .content(request.content)
+                .isbn(request.isbn)
                 .build();
     }
 }
