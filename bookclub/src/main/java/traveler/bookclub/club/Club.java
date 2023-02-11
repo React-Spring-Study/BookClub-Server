@@ -45,14 +45,15 @@ public class Club {
     private Member host;
 
     @Builder
-    public Club(String name, String information, Integer max, Integer num, String link, String imgUrl, Member member) {
+    public Club(String name, String information, Integer max, Integer num, String imgUrl, Member member) {
         this.name = name;
         this.information = information;
         this.max = max;
         this.num = num;
-        this.link = link;
         this.imgUrl = imgUrl;
         this.host = member;
         this.cid = UUID.randomUUID().toString();
+        this.link = "/club"+this.cid;
+        // 주소 가져오기
     }
 }

@@ -13,7 +13,6 @@ public class ClubSaveRequest {
     private String name;
     private String information;
     private Integer max;
-    private String link;
     private String imgUrl;
 
     public static Club toEntity(ClubSaveRequest request) {
@@ -22,7 +21,6 @@ public class ClubSaveRequest {
                 .information(request.information)
                 .max(request.max)
                 .num(1)
-                .link(request.link)
                 .imgUrl(request.imgUrl!=null ? request.imgUrl : "NA")
                 .build();
     }
