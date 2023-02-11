@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
-import traveler.bookclub.common.StringResponse;
+import traveler.bookclub.common.response.StringResponse;
 
 @RequestMapping("/club")
 @RequiredArgsConstructor

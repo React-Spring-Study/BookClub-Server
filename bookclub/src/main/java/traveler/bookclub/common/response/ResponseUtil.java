@@ -1,4 +1,4 @@
-package traveler.bookclub.common;
+package traveler.bookclub.common.response;
 
 public class ResponseUtil {
     public static <T> BasicResponse<T> success (T response) {

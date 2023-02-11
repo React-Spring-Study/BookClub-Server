@@ -1,4 +1,4 @@
-package traveler.bookclub.common;
+package traveler.bookclub.common.response;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
