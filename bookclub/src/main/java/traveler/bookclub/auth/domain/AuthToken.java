@@ -1,9 +1,11 @@
 package traveler.bookclub.auth.domain;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
 
 import java.security.Key;
@@ -57,23 +59,22 @@ public class AuthToken {
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-        } catch (SecurityException e) {
-            log.info("Invalid JWT signature.");
-            throw new AuthException();
+        } catch (SignatureException e) {
+            log.error("Invalid JWT signature.");
+            throw new AuthException(AuthErrorCode.INVALID_TOKEN_SIGNATURE);
         } catch (MalformedJwtException e) {
-            log.info("Invalid JWT token.");
-            throw new AuthException();
+            log.error("Invalid JWT token.");
+            throw new AuthException(AuthErrorCode.INVALID_ACCESS_TOKEN);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-            throw new AuthException();
+            log.error("Expired JWT token.");
+            throw new AuthException(AuthErrorCode.EXPIRED_JWT_TOKEN);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-            throw new AuthException();
+            log.error("Unsupported JWT token.");
+            throw new AuthException(AuthErrorCode.UNSUPPORTED_JWT_TOKEN);
         } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-//            throw new AuthException(AuthErrorCode.UNAUTHORIZED, "인증에 실패했습니다.");
+            log.error("JWT token compact of handler are invalid.");
+            throw new AuthException(AuthErrorCode.UNAUTHORIZED, "인증에 실패했습니다.");
         }
-        return null;
     }
 
     public Claims getExpiredTokenClaims() {

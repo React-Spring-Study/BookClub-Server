@@ -13,16 +13,22 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import traveler.bookclub.auth.domain.AuthTokenProvider;
+import traveler.bookclub.auth.domain.ExceptionHandlerFilter;
 import traveler.bookclub.auth.domain.TokenAuthenticationFilter;
-import traveler.bookclub.auth.exception.RestAuthenticationEntryPoint;
 import traveler.bookclub.auth.service.CustomUserDetailsService;
+import traveler.bookclub.common.util.CorsProperties;
+
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final CorsProperties corsProperties;
     private final CustomUserDetailsService userDetailsService;
     private final AuthTokenProvider tokenProvider;
 
@@ -51,6 +57,22 @@ public class SecurityConfig {
     }
 
     @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+
+        UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
+        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
+        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setMaxAge(corsConfig.getMaxAge());
+
+        corsConfigurationSource.registerCorsConfiguration("/**", corsConfig);
+        return corsConfigurationSource;
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable()
                 .and()
@@ -58,21 +80,14 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new RestAuthenticationEntryPoint());
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests()
-                .requestMatchers("/member/local",
-                        "/member/social",
-                        "/member/login",
-                        "/member/reissue",
-                        "/home/**", "/health").permitAll()
+                .requestMatchers("/member/**", "/health", "/test-login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(), TokenAuthenticationFilter.class);
 
         http.authenticationProvider(authenticationProvider());
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
 
 import java.security.Key;
@@ -53,6 +54,6 @@ public class AuthTokenProvider {
                     authorities);
             return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
         }
-        throw new AuthException();
+        throw new AuthException(AuthErrorCode.UNAUTHORIZED);
     }
 }
