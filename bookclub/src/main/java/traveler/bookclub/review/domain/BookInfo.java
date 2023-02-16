@@ -9,7 +9,6 @@ import traveler.bookclub.review.domain.Review;
 
 @Getter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BookInfo {
 
@@ -18,4 +17,9 @@ public class BookInfo {
     private Long id;
     private String title;
     private String isbn;
+
+    public BookInfo(String title, String isbn) {
+        this.title = title;
+        this.isbn = isbn;
+    }
 }

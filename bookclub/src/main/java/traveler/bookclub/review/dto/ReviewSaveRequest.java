@@ -13,14 +13,13 @@ public class ReviewSaveRequest {
 
     private String title;
     private String content;
-    private String isbn;
+    private BookInfoDto book;
     private String cid;
 
     public static Review toEntity(ReviewSaveRequest request) {
         return Review.builder()
                 .title(request.title)
                 .content(request.content)
-                .isbn(request.isbn)
                 .build();
     }
 }
