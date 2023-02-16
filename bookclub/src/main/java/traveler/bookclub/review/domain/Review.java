@@ -21,7 +21,10 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_content")
     private String content;
 
-    private String isbn;
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private BookInfo book;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,10 +32,10 @@ public class Review extends BaseTimeEntity {
     private Club club;
 
     @Builder
-    public Review(String title, String content, String isbn, Club club) {
+    public Review(String title, String content, BookInfo book, Club club) {
         this.title = title;
         this.content = content;
-        this.isbn = isbn;
+        this.book = book;
         this.club = club;
     }
 }
