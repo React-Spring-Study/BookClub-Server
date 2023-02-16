@@ -2,7 +2,7 @@ package traveler.bookclub.club.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import traveler.bookclub.entity.Member;
+import traveler.bookclub.member.domain.Member;
 
 import java.util.UUID;
 

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import traveler.bookclub.club.domain.Club;
+import traveler.bookclub.member.domain.Member;
 
 @Getter
 @Entity

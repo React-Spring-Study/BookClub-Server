@@ -2,7 +2,7 @@ package traveler.bookclub.club.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import traveler.bookclub.club.domain.Club;
-import traveler.bookclub.entity.Member;
+import traveler.bookclub.member.domain.Member;
 
 import java.util.Optional;
 
