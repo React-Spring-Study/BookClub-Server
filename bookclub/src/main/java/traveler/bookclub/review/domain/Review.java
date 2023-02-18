@@ -26,6 +26,9 @@ public class Review extends BaseTimeEntity {
     private BookInfo book;
 
     @Setter
+    @Column(name = "img_url")
+    private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;

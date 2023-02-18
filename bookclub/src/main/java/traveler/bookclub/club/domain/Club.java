@@ -35,6 +35,7 @@ public class Club {
     @Column
     private String cid;
 
+    @Setter
     @Column(name = "club_img")
     private String imgUrl;
 
@@ -43,13 +44,13 @@ public class Club {
     private Member host;
 
     @Builder
-    public Club(String name, String information, Integer max, Integer num, String imgUrl, Member member) {
+    public Club(String name, String information, Integer max, Integer num, String imgUrl, Member host) {
         this.name = name;
         this.information = information;
         this.max = max;
         this.num = num;
         this.imgUrl = imgUrl;
-        this.host = member;
+        this.host = host;
         this.cid = UUID.randomUUID().toString();
     }
 }

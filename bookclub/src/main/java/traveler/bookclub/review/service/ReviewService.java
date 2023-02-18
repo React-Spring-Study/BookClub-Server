@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.club.exception.ClubException;
 import traveler.bookclub.club.repository.ClubRepository;
@@ -15,9 +16,8 @@ import traveler.bookclub.review.dto.ReviewInfoResponse;
 import traveler.bookclub.review.dto.ReviewSaveRequest;
 import traveler.bookclub.review.exception.ReviewException;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 public class ReviewService {
@@ -25,12 +25,17 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ClubRepository clubRepository;
     private final MemberService memberService;
+    private final S3Service s3Service;
 
     @Transactional
-    public Long saveReview(ReviewSaveRequest request) {
+    public Long saveReview(ReviewSaveRequest request, MultipartFile multipartFile) throws IOException {
         Club club = clubRepository.findByCid(request.getCid())
                 .orElseThrow(() -> new ClubException());
+        String url = null;
+        if (! multipartFile.isEmpty())
+            url = s3Service.uploadReviewImage(multipartFile);
         Review entity = ReviewSaveRequest.toEntity(request, memberService.findCurrentMember(), club);
+        entity.setImgUrl(url);
         return reviewRepository.save(entity).getId();
     }
 

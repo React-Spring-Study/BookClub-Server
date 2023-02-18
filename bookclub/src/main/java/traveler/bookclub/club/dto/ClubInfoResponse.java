@@ -23,7 +23,7 @@ public class ClubInfoResponse {
     public static ClubInfoResponse of(Club club) {
         return new ClubInfoResponse(
                 club.getName(),
-//                club.getHost().getNickname(),
+                club.getHost().getNickname(),
                 club.getImgUrl()
         );
     }
