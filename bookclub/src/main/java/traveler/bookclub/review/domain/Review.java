@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.entity.BaseTimeEntity;
+import traveler.bookclub.member.domain.Member;
 
 @Getter
 @Entity
@@ -21,18 +22,27 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_content")
     private String content;
 
-    private String isbn;
+    @Embedded
+    private BookInfo book;
 
     @Setter
+    @Column(name = "img_url")
+    private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @Builder
-    public Review(String title, String content, String isbn, Club club) {
+    public Review(String title, String content, BookInfo book, Club club, Member member) {
         this.title = title;
         this.content = content;
-        this.isbn = isbn;
+        this.book = book;
         this.club = club;
+        this.member = member;
     }
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import traveler.bookclub.club.domain.Club;
+import traveler.bookclub.member.domain.Member;
 
 @Getter
 @AllArgsConstructor
@@ -16,12 +17,13 @@ public class ClubSaveRequest {
     private Integer max;
     private String imgUrl;
 
-    public static Club toEntity(ClubSaveRequest request) {
+    public static Club toEntity(ClubSaveRequest request, Member member) {
         return Club.builder()
                 .name(request.name)
                 .information(request.information)
                 .max(request.max)
                 .num(1)
+                .host(member)
                 .imgUrl(request.imgUrl!=null ? request.imgUrl : "NA")
                 .build();
     }

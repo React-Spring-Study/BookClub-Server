@@ -2,10 +2,13 @@ package traveler.bookclub.club.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
 import traveler.bookclub.common.response.StringResponse;
+
+import java.io.IOException;
 
 @RequestMapping("/club")
 @RequiredArgsConstructor
@@ -15,8 +18,8 @@ public class ClubController {
     private final ClubService clubService;
 
     @PostMapping
-    public StringResponse createClub(@RequestBody ClubSaveRequest request) {
-        String cid = clubService.createClub(request);
+    public StringResponse createClub(@RequestPart ClubSaveRequest request, MultipartFile img) throws IOException {
+        String cid = clubService.createClub(request, img);
 
         return new StringResponse("새로운 모임이 결성되었습니다. 클럽 ID: " + cid);
     }

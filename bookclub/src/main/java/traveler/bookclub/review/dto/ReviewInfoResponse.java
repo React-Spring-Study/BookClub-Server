@@ -11,10 +11,16 @@ public class ReviewInfoResponse {
     private String title;
     private String content;
     private String isbn;
-    //TODO: 작성자 닉네임 추가
+    private String writerName;
     private String createdDate;
 
-    public static ReviewInfoResponse of(Review review) {
-        return new ReviewInfoResponse(review.getTitle(), review.getContent(), review.getIsbn(), review.getCreatedDate().toString());
+    public static ReviewInfoResponse toDto(Review review) {
+        return new ReviewInfoResponse(
+                review.getTitle(),
+                review.getContent(),
+                review.getBook().getIsbn(),
+                review.getMember().getNickname(),
+                review.getCreatedDate().toString()
+        );
     }
 }
