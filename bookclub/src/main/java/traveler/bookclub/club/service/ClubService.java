@@ -41,7 +41,7 @@ public class ClubService {
         if (! multipartFile.isEmpty())
             url = s3Service.uploadClubImage(club.getCid(), multipartFile);
         club.setImgUrl(url);
-        joinClub(member, club);
+        addClubMember(member, club);
         clubRepository.save(club);
         return club.getCid();
     }
@@ -53,13 +53,22 @@ public class ClubService {
         return ClubInfoResponse.of(club);
     }
 
-    private void joinClub(Member member, Club club) {
+    @Transactional
+    public void joinClub(String cid) {
+        Member member = memberService.findCurrentMember();
+        Club club = clubRepository.findByCid(cid).orElseThrow(() -> new ClubException());
+        addClubMember(member, club);
+    }
+
+    private void addClubMember(Member member, Club club) {
         ClubMember clubMember = new ClubMember(club, member);
-        club.getMembers().add(clubMember);
         member.getClubs().add(clubMember);
+        club.getMembers().add(clubMember);
+        club.setNum(club.getNum() + 1);
         clubMemberRepository.save(clubMember);
     }
 
+    //TODO: 없애기
     @Transactional
     public List<ClubMemberTest> test() {
         Member currentMember = memberService.findCurrentMember();

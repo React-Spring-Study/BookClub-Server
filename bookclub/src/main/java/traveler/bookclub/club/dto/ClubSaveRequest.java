@@ -22,7 +22,7 @@ public class ClubSaveRequest {
                 .name(request.name)
                 .information(request.information)
                 .max(request.max)
-                .num(1)
+                .num(0)
                 .host(member)
                 .imgUrl(request.imgUrl != null ? request.imgUrl : "NA")
                 .build();

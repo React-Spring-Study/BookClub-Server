@@ -28,6 +28,7 @@ public class Club {
     @Column(name = "club_max")
     private Integer max;
 
+    @Setter
     @Column(name = "club_num")
     private Integer num;
 

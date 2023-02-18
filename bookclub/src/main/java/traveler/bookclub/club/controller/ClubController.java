@@ -31,6 +31,13 @@ public class ClubController {
         return clubService.showClubInfo(cid);
     }
 
+    @GetMapping("/new/{cid}")
+    public StringResponse joinRequest(@PathVariable String cid) {
+        clubService.joinClub(cid);
+        return new StringResponse("모임에 가입되셨습니다. 클럽 ID" + cid);
+    }
+
+    //TODO: 없애기
     @GetMapping("/test")
     public List<ClubMemberTest> showClubs() {
         return clubService.test();
