@@ -24,7 +24,7 @@ public class ClubSaveRequest {
                 .max(request.max)
                 .num(1)
                 .host(member)
-                .imgUrl(request.imgUrl!=null ? request.imgUrl : "NA")
+                .imgUrl(request.imgUrl != null ? request.imgUrl : "NA")
                 .build();
     }
 }

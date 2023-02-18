@@ -6,9 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
+import traveler.bookclub.clubMember.ClubMemberTest;
 import traveler.bookclub.common.response.StringResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequestMapping("/club")
 @RequiredArgsConstructor
@@ -27,5 +29,10 @@ public class ClubController {
     @GetMapping("/{cid}")
     public ClubInfoResponse showClubInfo(@PathVariable String cid) {
         return clubService.showClubInfo(cid);
+    }
+
+    @GetMapping("/test")
+    public List<ClubMemberTest> showClubs() {
+        return clubService.test();
     }
 }

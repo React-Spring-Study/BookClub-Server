@@ -10,17 +10,23 @@ import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
 import traveler.bookclub.club.exception.ClubException;
 import traveler.bookclub.club.repository.ClubRepository;
+import traveler.bookclub.clubMember.ClubMember;
+import traveler.bookclub.clubMember.ClubMemberRepository;
+import traveler.bookclub.clubMember.ClubMemberTest;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.service.S3Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    private final ClubMemberRepository clubMemberRepository;
     private final MemberService memberService;
     private final S3Service s3Service;
 
@@ -35,6 +41,7 @@ public class ClubService {
         if (! multipartFile.isEmpty())
             url = s3Service.uploadClubImage(club.getCid(), multipartFile);
         club.setImgUrl(url);
+        joinClub(member, club);
         clubRepository.save(club);
         return club.getCid();
     }
@@ -46,8 +53,20 @@ public class ClubService {
         return ClubInfoResponse.of(club);
     }
 
+    private void joinClub(Member member, Club club) {
+        ClubMember clubMember = new ClubMember(club, member);
+        club.getMembers().add(clubMember);
+        member.getClubs().add(clubMember);
+        clubMemberRepository.save(clubMember);
+    }
+
     @Transactional
-    public void readGroupMembers(String cid) {
-        //
+    public List<ClubMemberTest> test() {
+        Member currentMember = memberService.findCurrentMember();
+        List<ClubMemberTest> objects = new ArrayList<>();
+        for (ClubMember entity : currentMember.getClubs()) {
+            objects.add(ClubMemberTest.toDto(entity));
+        }
+        return objects;
     }
 }

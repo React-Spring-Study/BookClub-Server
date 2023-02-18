@@ -1,7 +1,6 @@
-package traveler.bookclub.entity;
+package traveler.bookclub.clubMember;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +17,10 @@ public class ClubMember {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

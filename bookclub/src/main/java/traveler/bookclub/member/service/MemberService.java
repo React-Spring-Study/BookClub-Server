@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import traveler.bookclub.auth.dto.GoogleProfile;
 import traveler.bookclub.auth.dto.TokenDto;
+import traveler.bookclub.auth.exception.AuthErrorCode;
+import traveler.bookclub.auth.exception.AuthException;
 import traveler.bookclub.auth.service.AuthService;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.domain.Role;
@@ -29,7 +31,9 @@ public class MemberService {
     public Member findCurrentMember() {
         // TODO: 쿼리 날리지 않고 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member user = memberRepository.findByUsername(authentication.getName()).get();
+        Member user = memberRepository.findByUsername(authentication.getName()).orElseThrow(
+                () -> new AuthException(AuthErrorCode.UNAUTHORIZED)
+        );
         return user;
     }
 

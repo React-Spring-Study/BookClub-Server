@@ -2,8 +2,11 @@ package traveler.bookclub.club.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import traveler.bookclub.clubMember.ClubMember;
 import traveler.bookclub.member.domain.Member;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -42,6 +45,9 @@ public class Club {
     @JoinColumn(name = "host_id")
     @ManyToOne
     private Member host;
+
+    @OneToMany(mappedBy = "club")
+    private List<ClubMember> members = new ArrayList<>();
 
     @Builder
     public Club(String name, String information, Integer max, Integer num, String imgUrl, Member host) {
