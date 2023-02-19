@@ -7,6 +7,7 @@ import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.comment.domain.Comment;
 import traveler.bookclub.comment.dto.CommentResponse;
 import traveler.bookclub.comment.dto.CommentSaveRequest;
+import traveler.bookclub.comment.dto.MyCommentListDto;
 import traveler.bookclub.comment.repository.CommentRepository;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
@@ -59,5 +60,11 @@ public class CommentService {
             response.add(commentResponse);
         }
         return response;
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyCommentListDto> readMyComments() {
+        Member me = memberService.findCurrentMember();
+        return MyCommentListDto.of(commentRepository.findAllByMember(me));
     }
 }
