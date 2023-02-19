@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public enum AuthErrorCode {
 
-    AUTH_PROVIDER_MISS_MATCH("소셜 로그인 provider 정보가 일치하지 않습니다."),
     UNAUTHORIZED("인증되지 않은 사용자입니다."),
     INVALID_ACCESS_TOKEN("유효하지 않은 토큰입니다."),
     INVALID_REFRESH_TOKEN("리프레시 토큰이 유효하지 않습니다."),
