@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import traveler.bookclub.club.domain.Club;
 
 @Getter
 @AllArgsConstructor
@@ -14,4 +15,8 @@ public class ClubListDto {
     private String name;
     private String hostName;
     private String imgUrl;
+
+    public static ClubListDto of(Club club) {
+        return new ClubListDto(club.getId(), club.getName(), club.getHost().getNickname(), club.getImgUrl());
+    }
 }

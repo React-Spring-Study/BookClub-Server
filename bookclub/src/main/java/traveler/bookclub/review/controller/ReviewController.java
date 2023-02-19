@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.common.response.StringResponse;
+import traveler.bookclub.review.dto.MyReviewListDto;
 import traveler.bookclub.review.dto.ReviewInfoResponse;
 import traveler.bookclub.review.dto.ReviewListDto;
 import traveler.bookclub.review.dto.ReviewSaveRequest;
@@ -34,5 +35,10 @@ public class ReviewController {
     @GetMapping("/{clubId}/{reviewId}")
     public ReviewInfoResponse readReview(@PathVariable Long clubId, @PathVariable Long reviewId) {
         return reviewService.readReviewInfo(clubId, reviewId);
+    }
+
+    @GetMapping("/me")
+    public List<MyReviewListDto> readMyReviews(Pageable pageable) {
+        return reviewService.readMyReviewList(pageable);
     }
 }
