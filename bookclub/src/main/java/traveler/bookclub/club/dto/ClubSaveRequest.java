@@ -15,16 +15,18 @@ public class ClubSaveRequest {
     private String name;
     private String information;
     private Integer max;
-    private String imgUrl;
 
-    public static Club toEntity(ClubSaveRequest request, Member member) {
+    private String link;
+
+    public static Club toEntity(ClubSaveRequest request, Member member, String imgUrl) {
         return Club.builder()
                 .name(request.name)
                 .information(request.information)
                 .max(request.max)
+                .link(request.link)
                 .num(0)
                 .host(member)
-                .imgUrl(request.imgUrl != null ? request.imgUrl : "NA")
+                .imgUrl(imgUrl)
                 .build();
     }
 }

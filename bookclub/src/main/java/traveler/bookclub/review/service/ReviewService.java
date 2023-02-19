@@ -34,9 +34,9 @@ public class ReviewService {
     @Transactional
     public Long saveReview(ReviewSaveRequest request, MultipartFile multipartFile) throws IOException {
         Member member = memberService.findCurrentMember();
-        Club club = clubRepository.findByCid(request.getCid())
+        Club club = clubRepository.findById(request.getClubId())
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
-        clubService.verifyClubMember(member, club);
+        clubService.verifyClubMember(member, request.getClubId());
         String url = null;
         if (! multipartFile.isEmpty())
             url = s3Service.uploadReviewImage(multipartFile);
@@ -45,23 +45,23 @@ public class ReviewService {
         return reviewRepository.save(entity).getId();
     }
 
-    @Transactional
-    public List<ReviewListDto> readReviewListByClub(String clubId, Pageable pageable) {
+    @Transactional(readOnly = true)
+    public List<ReviewListDto> readReviewListByClub(Long clubId, Pageable pageable) {
         Member member = memberService.findCurrentMember();
-        Club club = clubRepository.findByCid(clubId).orElseThrow(
+        Club club = clubRepository.findById(clubId).orElseThrow(
                 () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
         );
-        clubService.verifyClubMember(member, club);
+        clubService.verifyClubMember(member, clubId);
         return ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
     }
 
-    @Transactional
-    public ReviewInfoResponse readReviewInfo(String clubId, Long reviewId) {
+    @Transactional(readOnly = true)
+    public ReviewInfoResponse readReviewInfo(Long clubId, Long reviewId) {
         Member member = memberService.findCurrentMember();
-        Club club = clubRepository.findByCid(clubId).orElseThrow(
+        clubRepository.findById(clubId).orElseThrow(
                 () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
         );
-        clubService.verifyClubMember(member, club);
+        clubService.verifyClubMember(member, clubId);
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewException());
         return ReviewInfoResponse.toDto(review);

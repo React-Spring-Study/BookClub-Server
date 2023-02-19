@@ -18,7 +18,7 @@ public class ReviewSaveRequest {
     private String content;
     private String bookTitle;
     private String bookIsbn;
-    private String cid;
+    private Long clubId;
 
     public static Review toEntity(ReviewSaveRequest request, Member member, Club club) {
         return Review.builder()

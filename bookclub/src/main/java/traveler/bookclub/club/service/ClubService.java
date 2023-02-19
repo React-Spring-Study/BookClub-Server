@@ -32,46 +32,46 @@ public class ClubService {
     private final MemberService memberService;
     private final S3Service s3Service;
 
-    @Value("${backend.address}")
-    private String address;
-
     @Transactional
-    public String createClub(ClubSaveRequest request, MultipartFile multipartFile) throws IOException {
+    public Long createClub(ClubSaveRequest request, MultipartFile multipartFile) throws IOException {
         Member member = memberService.findCurrentMember();
-        Club club = ClubSaveRequest.toEntity(request, member);
         String url = null;
         if (! multipartFile.isEmpty())
-            url = s3Service.uploadClubImage(club.getCid(), multipartFile);
-        club.setImgUrl(url);
+            url = s3Service.uploadClubImage(multipartFile);
+        Club club = ClubSaveRequest.toEntity(request, member, url);
         addClubMember(member, club);
-        clubRepository.save(club);
-        return club.getCid();
+        return clubRepository.save(club).getId();
     }
 
-    @Transactional
-    public ClubInfoResponse showClubInfo(String cid) {
-        Club club = clubRepository.findByCid(cid)
+    @Transactional(readOnly = true)
+    public ClubInfoResponse showClubInfo(Long cid) {
+        Club club = clubRepository.findById(cid)
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
         return ClubInfoResponse.of(club);
     }
 
-    @Transactional
-    public void verifyClubMember(Member member, Club club) {
-        clubMemberRepository.findByMemberAndClub(member, club)
+    @Transactional(readOnly = true)
+    public void verifyClubMember(Member member, Long cid) {
+        clubMemberRepository.findByMemberAndClub_Id(member, cid)
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NO_AUTH));
     }
 
     @Transactional
-    public void joinClub(String cid) {
+    public void joinClub(Long cid) {
         Member member = memberService.findCurrentMember();
-        Club club = clubRepository.findByCid(cid)
+        Club club = clubRepository.findById(cid)
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
         addClubMember(member, club);
     }
 
     private void addClubMember(Member member, Club club) {
+        // 최대 인원 초과 검사
         if (club.getNum() == club.getMax())
             throw new ClubException(ClubErrorCode.CLUB_FULL_MEMBER);
+        // 중복 가입 검사
+        if (clubMemberRepository.findByMemberAndClub_Id(member, club.getId()).isPresent())
+            throw new ClubException(ClubErrorCode.CLUB_DUPLICATED_MEMBER);
+        // 검사 모두 통과하면 추가
         ClubMember clubMember = new ClubMember(club, member);
         member.getClubs().add(clubMember);
         club.getMembers().add(clubMember);

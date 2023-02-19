@@ -32,12 +32,8 @@ public class Club {
     @Column(name = "club_num")
     private Integer num;
 
-    @Setter
     @Column(name = "club_link")
     private String link;
-
-    @Column
-    private String cid;
 
     @Setter
     @Column(name = "club_img")
@@ -51,13 +47,13 @@ public class Club {
     private List<ClubMember> members = new ArrayList<>();
 
     @Builder
-    public Club(String name, String information, Integer max, Integer num, String imgUrl, Member host) {
+    public Club(String name, String information, Integer max, Integer num, String link, String imgUrl, Member host) {
         this.name = name;
         this.information = information;
         this.max = max;
         this.num = num;
+        this.link = link;
         this.imgUrl = imgUrl;
         this.host = host;
-        this.cid = UUID.randomUUID().toString();
     }
 }

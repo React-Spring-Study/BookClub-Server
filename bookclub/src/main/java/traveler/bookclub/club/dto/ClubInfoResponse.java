@@ -14,6 +14,8 @@ public class ClubInfoResponse {
     private String name;
     private String hostName;
     private String imgUrl;
+    private Integer max;
+    private Integer num;
 
     public ClubInfoResponse(String name, String imgUrl) {
         this.name = name;
@@ -24,7 +26,9 @@ public class ClubInfoResponse {
         return new ClubInfoResponse(
                 club.getName(),
                 club.getHost().getNickname(),
-                club.getImgUrl()
+                club.getImgUrl(),
+                club.getMax(),
+                club.getNum()
         );
     }
 }

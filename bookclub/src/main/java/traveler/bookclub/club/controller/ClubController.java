@@ -21,20 +21,20 @@ public class ClubController {
 
     @PostMapping
     public StringResponse createClub(@RequestPart ClubSaveRequest request, MultipartFile img) throws IOException {
-        String cid = clubService.createClub(request, img);
+        Long cid = clubService.createClub(request, img);
 
-        return new StringResponse("새로운 모임이 결성되었습니다. 클럽 ID: " + cid);
+        return new StringResponse("새로운 모임이 결성되었습니다. 클럽 ID: " + cid.toString());
     }
 
     @GetMapping("/{cid}")
-    public ClubInfoResponse showClubInfo(@PathVariable String cid) {
+    public ClubInfoResponse showClubInfo(@PathVariable Long cid) {
         return clubService.showClubInfo(cid);
     }
 
     @GetMapping("/new/{cid}")
-    public StringResponse joinRequest(@PathVariable String cid) {
+    public StringResponse joinRequest(@PathVariable Long cid) {
         clubService.joinClub(cid);
-        return new StringResponse("모임에 가입되셨습니다. 클럽 ID" + cid);
+        return new StringResponse("모임에 가입되셨습니다. 클럽 ID" + cid.toString());
     }
 
     //TODO: 없애기
