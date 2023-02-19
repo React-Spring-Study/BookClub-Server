@@ -8,6 +8,7 @@ import traveler.bookclub.review.domain.Review;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewInfoResponse {
 
+    private Long reviewId;
     private String title;
     private String content;
     private String isbn;
@@ -16,11 +17,12 @@ public class ReviewInfoResponse {
 
     public static ReviewInfoResponse toDto(Review review) {
         return new ReviewInfoResponse(
+                review.getId(),
                 review.getTitle(),
                 review.getContent(),
                 review.getBook().getIsbn(),
                 review.getMember().getNickname(),
-                review.getCreatedDate().toString()
+                review.getCreatedDate()
         );
     }
 }

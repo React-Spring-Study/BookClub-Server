@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReviewListDto {
 
+    private Long reviewId;
     private String title;
     private String writerName;
     private String isbn;
@@ -23,10 +24,11 @@ public class ReviewListDto {
         List<ReviewListDto> dtos = new ArrayList<>();
         for (Review review : entityList) {
             dtos.add(new ReviewListDto(
+                    review.getId(),
                     review.getTitle(),
                     review.getMember().getNickname(),
                     review.getBook().getIsbn(),
-                    review.getCreatedDate().toString())
+                    review.getCreatedDate())
             );
         }
         return dtos;

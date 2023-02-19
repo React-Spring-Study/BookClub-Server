@@ -9,6 +9,4 @@ import java.util.Optional;
 public interface ClubRepository extends JpaRepository<Club, Long> {
 
     Optional<Club> findAllByHost(Member host);
-
-    Optional<Club> findByCid(String cid);
 }

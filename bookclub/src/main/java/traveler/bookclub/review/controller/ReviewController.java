@@ -27,12 +27,12 @@ public class ReviewController {
     }
 
     @GetMapping("/club/{clubId}")
-    public List<ReviewListDto> readReviewsByCid(@PathVariable String clubId, Pageable pageable) {
+    public List<ReviewListDto> readReviewsByCid(@PathVariable Long clubId, Pageable pageable) {
         return reviewService.readReviewListByClub(clubId, pageable);
     }
 
     @GetMapping("/{clubId}/{reviewId}")
-    public ReviewInfoResponse readReview(@PathVariable String clubId, @PathVariable Long reviewId) {
+    public ReviewInfoResponse readReview(@PathVariable Long clubId, @PathVariable Long reviewId) {
         return reviewService.readReviewInfo(clubId, reviewId);
     }
 }

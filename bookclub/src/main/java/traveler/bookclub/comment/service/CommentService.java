@@ -3,10 +3,13 @@ package traveler.bookclub.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.comment.domain.Comment;
 import traveler.bookclub.comment.dto.CommentResponse;
 import traveler.bookclub.comment.dto.CommentSaveRequest;
 import traveler.bookclub.comment.repository.CommentRepository;
+import traveler.bookclub.member.domain.Member;
+import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.domain.Review;
 import traveler.bookclub.review.exception.ReviewException;
 import traveler.bookclub.review.repository.ReviewRepository;
@@ -18,6 +21,8 @@ import java.util.List;
 @Service
 public class CommentService {
 
+    private final MemberService memberService;
+    private final ClubService clubService;
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
 
@@ -25,26 +30,31 @@ public class CommentService {
     public Long saveComment(CommentSaveRequest request) {
         Review review = reviewRepository.findById(request.getReviewId())
                 .orElseThrow(() -> new ReviewException());
-        // TODO: 사용자 정보 가져오기 작성자 설정
+        Member member = memberService.findCurrentMember();
+        clubService.verifyClubMember(member, review.getClub().getId());
         Comment save = commentRepository.save(
                 Comment.builder()
                         .content(request.getContent())
                         .review(review)
+                        .member(member)
                         .build()
         );
         return save.getId();
     }
 
-    @Transactional
-    public List<CommentResponse> readComments(Long reviewId) {
+    @Transactional(readOnly = true)
+    public List<CommentResponse> readCommentsByReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewException());
+        Member member = memberService.findCurrentMember();
+        clubService.verifyClubMember(member, review.getClub().getId());
+
         List<CommentResponse> response = new ArrayList<>();
         for (Comment comment : commentRepository.findAllByReview(review)) {
             CommentResponse commentResponse = new CommentResponse(
                     comment.getContent(),
-//                    comment.getMember().getNickname(),
-                    comment.getCreatedDate().toString()
+                    comment.getMember().getNickname(),
+                    comment.getCreatedDate()
             );
             response.add(commentResponse);
         }

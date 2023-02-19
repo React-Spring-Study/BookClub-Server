@@ -1,12 +1,15 @@
 package traveler.bookclub.member.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import traveler.bookclub.entity.BaseTimeEntity;
+import traveler.bookclub.clubMember.ClubMember;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -25,8 +28,9 @@ public class Member extends BaseTimeEntity {
     private String password;
     private String email;
     private String profileUrl;
-    @NotNull
-    private String emailVerifiedYn;
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubMember> clubs = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -36,7 +40,6 @@ public class Member extends BaseTimeEntity {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.emailVerifiedYn = "Y";
         this.role = Role.MEMBER;
         this.profileUrl = profileUrl != null ? profileUrl : "noImg";
     }

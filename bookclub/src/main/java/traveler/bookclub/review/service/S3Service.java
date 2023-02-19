@@ -24,10 +24,10 @@ public class S3Service {
     private String bucket;
 
     @Transactional
-    public String uploadClubImage(String clubId, MultipartFile multipartFile) throws IOException {
+    public String uploadClubImage( MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        String storeFileName = clubId + "." + ext;
+        String storeFileName = UUID.randomUUID() + "." + ext;
         String key = "clubs/" + storeFileName;
 
         try (InputStream inputStream = multipartFile.getInputStream()) {

@@ -24,6 +24,6 @@ public class CommentController {
 
     @GetMapping("/{reviewId}")
     public List<CommentResponse> readComments(@PathVariable Long reviewId) {
-        return commentService.readComments(reviewId);
+        return commentService.readCommentsByReview(reviewId);
     }
 }
