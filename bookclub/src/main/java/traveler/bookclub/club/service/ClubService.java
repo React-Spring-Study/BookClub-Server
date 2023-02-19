@@ -56,8 +56,8 @@ public class ClubService {
     }
 
     @Transactional
-    public ClubMember verifyClubMember(Member member, Club club) {
-        return clubMemberRepository.findByMemberAndClub(member, club)
+    public void verifyClubMember(Member member, Club club) {
+        clubMemberRepository.findByMemberAndClub(member, club)
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NO_AUTH));
     }
 
@@ -70,6 +70,8 @@ public class ClubService {
     }
 
     private void addClubMember(Member member, Club club) {
+        if (club.getNum() == club.getMax())
+            throw new ClubException(ClubErrorCode.CLUB_FULL_MEMBER);
         ClubMember clubMember = new ClubMember(club, member);
         member.getClubs().add(clubMember);
         club.getMembers().add(clubMember);
