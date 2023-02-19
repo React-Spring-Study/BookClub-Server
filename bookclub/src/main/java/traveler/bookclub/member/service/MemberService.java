@@ -11,6 +11,7 @@ import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.dto.MemberInfoResponse;
+import traveler.bookclub.member.exception.MemberErrorCode;
 import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.repository.MemberRepository;
 
@@ -35,13 +36,13 @@ public class MemberService {
         return user;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Member findMemberByUsername(String username) {
         return memberRepository.findByUsername(username)
-                .orElseThrow(() -> new MemberException());
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public boolean verifyMember(String username) {
         return memberRepository.findByUsername(username).isPresent();
     }
