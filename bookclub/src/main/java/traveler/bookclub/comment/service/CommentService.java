@@ -3,10 +3,6 @@ package traveler.bookclub.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import traveler.bookclub.club.domain.Club;
-import traveler.bookclub.club.exception.ClubErrorCode;
-import traveler.bookclub.club.exception.ClubException;
-import traveler.bookclub.club.repository.ClubRepository;
 import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.comment.domain.Comment;
 import traveler.bookclub.comment.dto.CommentResponse;
@@ -27,7 +23,6 @@ public class CommentService {
 
     private final MemberService memberService;
     private final ClubService clubService;
-    private final ClubRepository clubRepository;
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
 

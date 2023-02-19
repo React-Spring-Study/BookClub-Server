@@ -28,7 +28,6 @@ import traveler.bookclub.common.util.AppProperties;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.domain.Role;
 import traveler.bookclub.member.exception.MemberException;
-import traveler.bookclub.member.repository.MemberRepository;
 import traveler.bookclub.member.service.MemberService;
 
 import java.util.Date;

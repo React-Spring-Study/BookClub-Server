@@ -1,7 +1,6 @@
 package traveler.bookclub.club.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +14,6 @@ import traveler.bookclub.clubMember.ClubMember;
 import traveler.bookclub.clubMember.ClubMemberRepository;
 import traveler.bookclub.clubMember.ClubMemberTest;
 import traveler.bookclub.member.domain.Member;
-import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.service.S3Service;
 

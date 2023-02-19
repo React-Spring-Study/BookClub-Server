@@ -7,12 +7,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import traveler.bookclub.auth.dto.GoogleProfile;
-import traveler.bookclub.auth.dto.TokenDto;
 import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
-import traveler.bookclub.auth.service.AuthService;
 import traveler.bookclub.member.domain.Member;
-import traveler.bookclub.member.domain.Role;
 import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.repository.MemberRepository;
 

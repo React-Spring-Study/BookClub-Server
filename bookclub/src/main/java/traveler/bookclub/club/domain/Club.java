@@ -7,7 +7,6 @@ import traveler.bookclub.member.domain.Member;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Entity
