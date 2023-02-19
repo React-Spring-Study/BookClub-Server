@@ -1,14 +1,13 @@
 package traveler.bookclub.member.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.auth.dto.AuthInfo;
 import traveler.bookclub.auth.dto.LoginRequest;
 import traveler.bookclub.auth.dto.TokenDto;
 import traveler.bookclub.auth.service.AuthService;
+import traveler.bookclub.member.dto.MemberInfoResponse;
+import traveler.bookclub.member.service.MemberService;
 
 @RequiredArgsConstructor
 @RequestMapping("/member")
@@ -16,6 +15,7 @@ import traveler.bookclub.auth.service.AuthService;
 public class MemberController {
 
     private final AuthService authService;
+    private final MemberService memberService;
 
     @PostMapping("/join")
     public TokenDto join(@RequestBody LoginRequest request) {
@@ -33,5 +33,10 @@ public class MemberController {
     public TokenDto reissue(@RequestBody TokenDto request){
         AuthInfo info = authService.reissueToken(request);
         return new TokenDto(info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
+    }
+
+    @GetMapping("/me")
+    public MemberInfoResponse readMe() {
+        return memberService.showMe();
     }
 }

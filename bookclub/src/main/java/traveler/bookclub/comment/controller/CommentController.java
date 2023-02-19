@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.comment.dto.CommentResponse;
 import traveler.bookclub.comment.dto.CommentSaveRequest;
+import traveler.bookclub.comment.dto.MyCommentListDto;
 import traveler.bookclub.comment.service.CommentService;
 import traveler.bookclub.common.response.StringResponse;
 
@@ -25,5 +26,10 @@ public class CommentController {
     @GetMapping("/{reviewId}")
     public List<CommentResponse> readComments(@PathVariable Long reviewId) {
         return commentService.readCommentsByReview(reviewId);
+    }
+
+    @GetMapping("/me")
+    public List<MyCommentListDto> readMyComments() {
+        return commentService.readMyComments();
     }
 }

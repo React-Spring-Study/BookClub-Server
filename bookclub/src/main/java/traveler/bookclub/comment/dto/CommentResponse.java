@@ -12,9 +12,4 @@ public class CommentResponse {
     private String content;
     private String writerName;
     private String createdDate;
-
-    public CommentResponse(String content, String createdDate) {
-        this.content = content;
-        this.createdDate = createdDate;
-    }
 }

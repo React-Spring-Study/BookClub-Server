@@ -12,7 +12,7 @@ import traveler.bookclub.club.exception.ClubException;
 import traveler.bookclub.club.repository.ClubRepository;
 import traveler.bookclub.clubMember.ClubMember;
 import traveler.bookclub.clubMember.ClubMemberRepository;
-import traveler.bookclub.clubMember.ClubMemberTest;
+import traveler.bookclub.clubMember.ClubMemberResponse;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.service.S3Service;
@@ -77,13 +77,14 @@ public class ClubService {
         clubMemberRepository.save(clubMember);
     }
 
-    //TODO: 없애기
     @Transactional
-    public List<ClubMemberTest> test() {
+    public List<ClubMemberResponse> readMyClubs() {
         Member currentMember = memberService.findCurrentMember();
-        List<ClubMemberTest> objects = new ArrayList<>();
+        List<ClubMemberResponse> objects = new ArrayList<>();
         for (ClubMember entity : currentMember.getClubs()) {
-            objects.add(ClubMemberTest.toDto(entity));
+            Club club = clubRepository.findById(entity.getClub().getId())
+                    .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+            objects.add(ClubMemberResponse.toDto(club));
         }
         return objects;
     }

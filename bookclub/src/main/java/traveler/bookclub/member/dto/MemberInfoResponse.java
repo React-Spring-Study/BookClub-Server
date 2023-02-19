@@ -9,12 +9,16 @@ import traveler.bookclub.member.domain.Member;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class WriterInfo {
-
+public class MemberInfoResponse {
     private String nickname;
-    private String profileImg;
+    private String email;
+    private String profileUrl;
 
-    public static WriterInfo toDto(Member member) {
-        return new WriterInfo(member.getNickname(), member.getProfileUrl());
+    public static MemberInfoResponse toResponse(Member member) {
+        return new MemberInfoResponse(
+                member.getNickname(),
+                member.getEmail(),
+                member.getProfileUrl()
+        );
     }
 }

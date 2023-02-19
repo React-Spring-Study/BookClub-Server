@@ -12,6 +12,7 @@ import traveler.bookclub.club.repository.ClubRepository;
 import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
+import traveler.bookclub.review.dto.MyReviewListDto;
 import traveler.bookclub.review.dto.ReviewListDto;
 import traveler.bookclub.review.repository.ReviewRepository;
 import traveler.bookclub.review.domain.Review;
@@ -53,6 +54,12 @@ public class ReviewService {
         );
         clubService.verifyClubMember(member, clubId);
         return ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
+    }
+
+    @Transactional(readOnly = true)
+    public List<MyReviewListDto> readMyReviewList(Pageable pageable) {
+        Member me = memberService.findCurrentMember();
+        return MyReviewListDto.toMyReviewDtoList(reviewRepository.findAllByMember(me, pageable));
     }
 
     @Transactional(readOnly = true)

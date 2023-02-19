@@ -10,6 +10,7 @@ import traveler.bookclub.auth.dto.GoogleProfile;
 import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
 import traveler.bookclub.member.domain.Member;
+import traveler.bookclub.member.dto.MemberInfoResponse;
 import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.repository.MemberRepository;
 
@@ -58,6 +59,10 @@ public class MemberService {
         return memberRepository.save(newUser);
     }
 
+    @Transactional(readOnly = true)
+    public MemberInfoResponse showMe() {
+        return MemberInfoResponse.toResponse(findCurrentMember());
+    }
 
     @Transactional
     public void updateMember(Member member, GoogleProfile profile) {

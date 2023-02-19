@@ -1,6 +1,8 @@
 package traveler.bookclub.review.dto;
 
 import lombok.*;
+import traveler.bookclub.member.domain.Member;
+import traveler.bookclub.member.dto.WriterInfo;
 import traveler.bookclub.review.domain.Review;
 
 @Getter
@@ -12,16 +14,17 @@ public class ReviewInfoResponse {
     private String title;
     private String content;
     private String isbn;
-    private String writerName;
+    private WriterInfo writer;
     private String createdDate;
 
     public static ReviewInfoResponse toDto(Review review) {
+        Member member = review.getMember();
         return new ReviewInfoResponse(
                 review.getId(),
                 review.getTitle(),
                 review.getContent(),
                 review.getBook().getIsbn(),
-                review.getMember().getNickname(),
+                new WriterInfo(member.getNickname(), member.getProfileUrl()),
                 review.getCreatedDate()
         );
     }
