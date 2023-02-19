@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
+import traveler.bookclub.club.exception.ClubErrorCode;
 import traveler.bookclub.club.exception.ClubException;
 import traveler.bookclub.club.repository.ClubRepository;
 import traveler.bookclub.clubMember.ClubMember;
@@ -50,20 +51,21 @@ public class ClubService {
     @Transactional
     public ClubInfoResponse showClubInfo(String cid) {
         Club club = clubRepository.findByCid(cid)
-                .orElseThrow(() -> new ClubException());
+                .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
         return ClubInfoResponse.of(club);
     }
 
     @Transactional
     public ClubMember verifyClubMember(Member member, Club club) {
         return clubMemberRepository.findByMemberAndClub(member, club)
-                .orElseThrow(() -> new MemberException());
+                .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NO_AUTH));
     }
 
     @Transactional
     public void joinClub(String cid) {
         Member member = memberService.findCurrentMember();
-        Club club = clubRepository.findByCid(cid).orElseThrow(() -> new ClubException());
+        Club club = clubRepository.findByCid(cid)
+                .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
         addClubMember(member, club);
     }
 
