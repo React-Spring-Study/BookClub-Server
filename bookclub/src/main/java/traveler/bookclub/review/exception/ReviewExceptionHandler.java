@@ -1,4 +1,4 @@
-package traveler.bookclub.member.exception;
+package traveler.bookclub.review.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,12 +9,12 @@ import traveler.bookclub.common.response.ErrorEntity;
 
 @Slf4j
 @RestControllerAdvice
-public class MemberExceptionHandler {
+public class ReviewExceptionHandler {
 
-    @ExceptionHandler(MemberException.class)
+    @ExceptionHandler(ReviewException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorEntity onMemberException(MemberException ex) {
-        log.error("MemberException[{}]: {}", ex.getErrorCode().toString(), ex.getErrorMessage());
+    public ErrorEntity onReviewException(ReviewException ex) {
+        log.error("ReviewException[{}]: {}", ex.getErrorCode().toString(), ex.getErrorMessage());
         return new ErrorEntity(ex.getErrorCode().toString(), ex.getErrorMessage());
     }
 }

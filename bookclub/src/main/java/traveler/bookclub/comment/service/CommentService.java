@@ -12,6 +12,7 @@ import traveler.bookclub.comment.repository.CommentRepository;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.domain.Review;
+import traveler.bookclub.review.exception.ReviewErrorCode;
 import traveler.bookclub.review.exception.ReviewException;
 import traveler.bookclub.review.repository.ReviewRepository;
 
@@ -30,7 +31,7 @@ public class CommentService {
     @Transactional
     public Long saveComment(CommentSaveRequest request) {
         Review review = reviewRepository.findById(request.getReviewId())
-                .orElseThrow(() -> new ReviewException());
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
         Member member = memberService.findCurrentMember();
         clubService.verifyClubMember(member, review.getClub().getId());
         Comment save = commentRepository.save(
@@ -46,7 +47,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentResponse> readCommentsByReview(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ReviewException());
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
         Member member = memberService.findCurrentMember();
         clubService.verifyClubMember(member, review.getClub().getId());
 
