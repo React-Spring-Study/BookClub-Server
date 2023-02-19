@@ -14,6 +14,7 @@ import traveler.bookclub.clubMember.ClubMember;
 import traveler.bookclub.clubMember.ClubMemberRepository;
 import traveler.bookclub.clubMember.ClubMemberTest;
 import traveler.bookclub.member.domain.Member;
+import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.service.S3Service;
 
@@ -51,6 +52,12 @@ public class ClubService {
         Club club = clubRepository.findByCid(cid)
                 .orElseThrow(() -> new ClubException());
         return ClubInfoResponse.of(club);
+    }
+
+    @Transactional
+    public ClubMember verifyClubMember(Member member, Club club) {
+        return clubMemberRepository.findByMemberAndClub(member, club)
+                .orElseThrow(() -> new MemberException());
     }
 
     @Transactional
