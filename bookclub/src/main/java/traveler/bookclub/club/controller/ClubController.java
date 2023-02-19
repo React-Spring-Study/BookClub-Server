@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
-import traveler.bookclub.clubMember.ClubMemberTest;
+import traveler.bookclub.clubMember.ClubMemberResponse;
 import traveler.bookclub.common.response.StringResponse;
 
 import java.io.IOException;
@@ -37,9 +37,8 @@ public class ClubController {
         return new StringResponse("모임에 가입되셨습니다. 클럽 ID" + cid.toString());
     }
 
-    //TODO: 없애기
-    @GetMapping("/test")
-    public List<ClubMemberTest> showClubs() {
-        return clubService.test();
+    @GetMapping("/me")
+    public List<ClubMemberResponse> showClubs() {
+        return clubService.readMyClubs();
     }
 }

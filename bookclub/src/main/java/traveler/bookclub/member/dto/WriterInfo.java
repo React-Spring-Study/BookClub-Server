@@ -12,7 +12,7 @@ import traveler.bookclub.member.domain.Member;
 public class WriterInfo {
 
     private String nickname;
-    private String imgUrl;
+    private String profileImg;
 
     public static WriterInfo toDto(Member member) {
         return new WriterInfo(member.getNickname(), member.getProfileUrl());
