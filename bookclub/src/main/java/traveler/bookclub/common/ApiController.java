@@ -19,7 +19,7 @@ public class ApiController {
 
     @PostMapping("/test-login1")
     public TokenDto testLogin() {
-        AuthInfo info = authService.testLogin();
+        AuthInfo info = authService.testLogin1();
         return new TokenDto(info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
     }
 

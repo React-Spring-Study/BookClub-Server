@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.auth.dto.AuthInfo;
+import traveler.bookclub.auth.dto.JoinRequest;
 import traveler.bookclub.auth.dto.LoginRequest;
 import traveler.bookclub.auth.dto.TokenDto;
 import traveler.bookclub.auth.service.AuthService;
@@ -19,8 +20,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public TokenDto join(@Valid @RequestBody LoginRequest request) {
-        AuthInfo authInfo = authService.signUp(request.getToken());
+    public TokenDto join(@Valid @RequestBody JoinRequest request) {
+        AuthInfo authInfo = authService.signUp(request);
         return new TokenDto(authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
     }
 
