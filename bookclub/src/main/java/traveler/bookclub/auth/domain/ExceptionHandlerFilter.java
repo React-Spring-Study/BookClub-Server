@@ -43,7 +43,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.setContentType("application/json");
             response.getWriter().write(objectMapper.writeValueAsString(basicResponse));
-        }catch (IOException ex){
+        } catch (IOException ex){
             ex.printStackTrace();
         }
     }

@@ -1,5 +1,6 @@
 package traveler.bookclub.club.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -19,6 +20,7 @@ public class ClubSaveRequest {
     @NotNull
     private String information;
     @NotNull
+    @Min(value = 1)
     private Integer max;
 
     private String link;
