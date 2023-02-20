@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.comment.dto.CommentResponse;
 import traveler.bookclub.comment.dto.CommentSaveRequest;
+import traveler.bookclub.comment.dto.CommentUpdateRequest;
 import traveler.bookclub.comment.dto.MyCommentListDto;
 import traveler.bookclub.comment.service.CommentService;
 import traveler.bookclub.common.response.StringResponse;
@@ -32,5 +33,11 @@ public class CommentController {
     @GetMapping("/me")
     public List<MyCommentListDto> readMyComments() {
         return commentService.readMyComments();
+    }
+
+    @PutMapping
+    public StringResponse updateComment(@Valid @RequestBody CommentUpdateRequest request) {
+        commentService.updateComment(request);
+        return new StringResponse("댓글을 성공적으로 수정했습니다.");
     }
 }

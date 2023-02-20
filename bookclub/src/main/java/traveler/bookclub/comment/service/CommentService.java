@@ -7,7 +7,10 @@ import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.comment.domain.Comment;
 import traveler.bookclub.comment.dto.CommentResponse;
 import traveler.bookclub.comment.dto.CommentSaveRequest;
+import traveler.bookclub.comment.dto.CommentUpdateRequest;
 import traveler.bookclub.comment.dto.MyCommentListDto;
+import traveler.bookclub.comment.exception.CommentErrorCode;
+import traveler.bookclub.comment.exception.CommentException;
 import traveler.bookclub.comment.repository.CommentRepository;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
@@ -54,6 +57,7 @@ public class CommentService {
         List<CommentResponse> response = new ArrayList<>();
         for (Comment comment : commentRepository.findAllByReview(review)) {
             CommentResponse commentResponse = new CommentResponse(
+                    comment.getId(),
                     comment.getContent(),
                     comment.getMember().getNickname(),
                     comment.getCreatedDate()
@@ -67,5 +71,13 @@ public class CommentService {
     public List<MyCommentListDto> readMyComments() {
         Member me = memberService.findCurrentMember();
         return MyCommentListDto.of(commentRepository.findAllByMember(me));
+    }
+
+    @Transactional
+    public void updateComment(CommentUpdateRequest request) {
+        Comment comment = commentRepository.findById(request.getCommentId()).orElseThrow(
+                () -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND)
+        );
+        comment.update(request.getContent());
     }
 }
