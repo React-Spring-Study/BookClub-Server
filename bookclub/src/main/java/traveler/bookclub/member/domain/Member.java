@@ -44,4 +44,9 @@ public class Member extends BaseTimeEntity {
         this.profileUrl = profileUrl;
     }
 
+    public String update(String nickname) {
+        this.nickname = nickname != null? nickname : this.nickname;
+        return this.nickname;
+    }
+
 }

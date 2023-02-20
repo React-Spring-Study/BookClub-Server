@@ -11,6 +11,7 @@ import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.dto.MemberInfoResponse;
+import traveler.bookclub.member.dto.MemberUpdateDto;
 import traveler.bookclub.member.exception.MemberErrorCode;
 import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.repository.MemberRepository;
@@ -66,7 +67,11 @@ public class MemberService {
     }
 
     @Transactional
+    public String updateMyName(MemberUpdateDto form) {
+        return findCurrentMember().update(form.getNickname());
+    }
+
     public void updateMember(Member member, GoogleProfile profile) {
-        //
+        member.update(profile.getName());
     }
 }

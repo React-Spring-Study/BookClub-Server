@@ -8,7 +8,9 @@ import traveler.bookclub.auth.dto.JoinRequest;
 import traveler.bookclub.auth.dto.LoginRequest;
 import traveler.bookclub.auth.dto.TokenDto;
 import traveler.bookclub.auth.service.AuthService;
+import traveler.bookclub.common.response.StringResponse;
 import traveler.bookclub.member.dto.MemberInfoResponse;
+import traveler.bookclub.member.dto.MemberUpdateDto;
 import traveler.bookclub.member.service.MemberService;
 
 @RequiredArgsConstructor
@@ -40,5 +42,11 @@ public class MemberController {
     @GetMapping("/me")
     public MemberInfoResponse readMe() {
         return memberService.showMe();
+    }
+
+    @PutMapping("/me")
+    public StringResponse changeNickname(@Valid @RequestBody MemberUpdateDto form) {
+        String newName = memberService.updateMyName(form);
+        return new StringResponse("닉네임을 성공적으로 수정하였습니다. 변경된 닉네임: " + newName);
     }
 }

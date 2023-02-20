@@ -22,7 +22,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> EXCLUDE_URL =
             List.of(
-                    "/member/login", "/member/join", "/member/reissue", "/health", "/test-login"
+                    "/member/login", "/member/join", "/member/reissue", "/health", "/test-login1", "/test-login2"
             );
 
     @Override
