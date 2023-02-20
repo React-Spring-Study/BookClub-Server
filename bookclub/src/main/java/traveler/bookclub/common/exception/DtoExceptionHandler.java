@@ -22,7 +22,7 @@ public class DtoExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors()
                 .forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
-        log.error("Dto Validation Exception({}) - {}", DtoValidationErrorCode.BAD_INPUT, DtoValidationErrorCode.BAD_INPUT.getDefaultErrorMessage());
+        log.error("Dto Validation Exception({}): {}", DtoValidationErrorCode.BAD_INPUT, errors);
         return new ErrorEntity(DtoValidationErrorCode.BAD_INPUT.toString(),
                 DtoValidationErrorCode.BAD_INPUT.getDefaultErrorMessage(),
                 errors);
