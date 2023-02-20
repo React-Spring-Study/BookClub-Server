@@ -14,6 +14,7 @@ import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.dto.MyReviewListDto;
 import traveler.bookclub.review.dto.ReviewListDto;
+import traveler.bookclub.review.exception.ReviewErrorCode;
 import traveler.bookclub.review.repository.ReviewRepository;
 import traveler.bookclub.review.domain.Review;
 import traveler.bookclub.review.dto.ReviewInfoResponse;
@@ -70,7 +71,7 @@ public class ReviewService {
         );
         clubService.verifyClubMember(member, clubId);
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new ReviewException());
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
         return ReviewInfoResponse.toDto(review);
     }
 }

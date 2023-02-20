@@ -27,6 +27,7 @@ import traveler.bookclub.auth.repository.MemberRefreshTokenRepository;
 import traveler.bookclub.common.util.AppProperties;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.domain.Role;
+import traveler.bookclub.member.exception.MemberErrorCode;
 import traveler.bookclub.member.exception.MemberException;
 import traveler.bookclub.member.service.MemberService;
 
@@ -61,7 +62,7 @@ public class AuthService {
     public AuthInfo signUp(String token) {
         GoogleProfile profile = getProfileByToken(token);
         if (memberService.verifyMember(profile.getId()))
-            throw new MemberException(); // 이미 가입된 멤버 회원가입 불가
+            throw new MemberException(MemberErrorCode.MEMBER_DUPLICATED); // 이미 가입된 멤버 회원가입 불가
         return new AuthInfo(createAuth(profile), setRefreshToken(profile));
     }
 
@@ -161,7 +162,6 @@ public class AuthService {
 
     private AuthToken createAuth(GoogleProfile profile) {
 
-        // TODO: BadCredentialsException 처리 (아이디, 비밀번호 틀린 경우)
         try{
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

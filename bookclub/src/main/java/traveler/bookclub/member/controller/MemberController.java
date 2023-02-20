@@ -1,5 +1,6 @@
 package traveler.bookclub.member.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.auth.dto.AuthInfo;
@@ -18,19 +19,19 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public TokenDto join(@RequestBody LoginRequest request) {
+    public TokenDto join(@Valid @RequestBody LoginRequest request) {
         AuthInfo authInfo = authService.signUp(request.getToken());
         return new TokenDto(authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
     }
 
     @PostMapping("/login")
-    public TokenDto login(@RequestBody LoginRequest request) {
+    public TokenDto login(@Valid @RequestBody LoginRequest request) {
         AuthInfo authInfo = authService.login(request.getToken());
         return new TokenDto(authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
     }
 
     @PostMapping("/reissue")
-    public TokenDto reissue(@RequestBody TokenDto request){
+    public TokenDto reissue(@Valid @RequestBody TokenDto request){
         AuthInfo info = authService.reissueToken(request);
         return new TokenDto(info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
     }
