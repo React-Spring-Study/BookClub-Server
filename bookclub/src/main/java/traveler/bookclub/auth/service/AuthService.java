@@ -59,6 +59,15 @@ public class AuthService {
     }
 
     @Transactional
+    public AuthInfo testLogin2() {
+        GoogleProfile googleProfile = new GoogleProfile(
+                "namjihyunTest22", "스프링", "helloSpring@naver.com", "http://s3dfrhhyjsdgawfefsd"
+        );
+        memberService.createMember(googleProfile);
+        return new AuthInfo(createAuth(googleProfile), setRefreshToken(googleProfile));
+    }
+
+    @Transactional
     public AuthInfo signUp(String token) {
         GoogleProfile profile = getProfileByToken(token);
         if (memberService.verifyMember(profile.getId()))
