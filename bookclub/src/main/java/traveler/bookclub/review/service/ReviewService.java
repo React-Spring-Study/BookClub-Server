@@ -64,14 +64,12 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewInfoResponse readReviewInfo(Long clubId, Long reviewId) {
+    public ReviewInfoResponse readReviewInfo(Long reviewId) {
         Member member = memberService.findCurrentMember();
-        clubRepository.findById(clubId).orElseThrow(
-                () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
-        );
-        clubService.verifyClubMember(member, clubId);
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
+        clubService.verifyClubMember(member, review.getClub().getId());
+
         return ReviewInfoResponse.toDto(review);
     }
 }

@@ -32,10 +32,9 @@ public class ReviewController {
         return reviewService.readReviewListByClub(clubId, pageable);
     }
 
-    @GetMapping("/{clubId}/{reviewId}")
-    public ReviewInfoResponse readReview(@PathVariable Long clubId, @PathVariable Long reviewId) {
-        //TODO: clubId와 reviewId 관계성...?
-        return reviewService.readReviewInfo(clubId, reviewId);
+    @GetMapping("/{reviewId}")
+    public ReviewInfoResponse readReview(@PathVariable Long reviewId) {
+        return reviewService.readReviewInfo(reviewId);
     }
 
     @GetMapping("/me")
