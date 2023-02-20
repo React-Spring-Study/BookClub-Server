@@ -12,7 +12,6 @@ import traveler.bookclub.review.dto.ReviewListDto;
 import traveler.bookclub.review.dto.ReviewSaveRequest;
 import traveler.bookclub.review.service.ReviewService;
 
-import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/review")
@@ -23,7 +22,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public StringResponse createReview(@Valid @RequestPart ReviewSaveRequest request, MultipartFile img) throws IOException {
+    public StringResponse createReview(@Valid @RequestPart ReviewSaveRequest request, MultipartFile img) {
         Long reviewId = reviewService.saveReview(request, img);
         return new StringResponse("리뷰를 성공적으로 저장했습니다. 리뷰 ID: " + reviewId.toString());
     }
@@ -35,6 +34,7 @@ public class ReviewController {
 
     @GetMapping("/{clubId}/{reviewId}")
     public ReviewInfoResponse readReview(@PathVariable Long clubId, @PathVariable Long reviewId) {
+        //TODO: clubId와 reviewId 관계성...?
         return reviewService.readReviewInfo(clubId, reviewId);
     }
 

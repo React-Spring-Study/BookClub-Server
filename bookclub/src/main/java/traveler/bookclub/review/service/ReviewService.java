@@ -10,6 +10,7 @@ import traveler.bookclub.club.exception.ClubErrorCode;
 import traveler.bookclub.club.exception.ClubException;
 import traveler.bookclub.club.repository.ClubRepository;
 import traveler.bookclub.club.service.ClubService;
+import traveler.bookclub.common.util.S3Service;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
 import traveler.bookclub.review.dto.MyReviewListDto;
@@ -21,7 +22,6 @@ import traveler.bookclub.review.dto.ReviewInfoResponse;
 import traveler.bookclub.review.dto.ReviewSaveRequest;
 import traveler.bookclub.review.exception.ReviewException;
 
-import java.io.IOException;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
@@ -34,7 +34,7 @@ public class ReviewService {
     private final S3Service s3Service;
 
     @Transactional
-    public Long saveReview(ReviewSaveRequest request, MultipartFile multipartFile) throws IOException {
+    public Long saveReview(ReviewSaveRequest request, MultipartFile multipartFile) {
         Member member = memberService.findCurrentMember();
         Club club = clubRepository.findById(request.getClubId())
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
