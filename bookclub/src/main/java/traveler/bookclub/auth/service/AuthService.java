@@ -162,7 +162,6 @@ public class AuthService {
 
     private AuthToken createAuth(GoogleProfile profile) {
 
-        // TODO: BadCredentialsException 처리 (아이디, 비밀번호 틀린 경우)
         try{
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(

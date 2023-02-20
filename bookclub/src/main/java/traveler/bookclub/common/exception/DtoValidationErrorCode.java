@@ -1,4 +1,4 @@
-package traveler.bookclub.common;
+package traveler.bookclub.common.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

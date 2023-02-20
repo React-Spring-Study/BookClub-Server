@@ -1,5 +1,6 @@
 package traveler.bookclub.club.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,7 @@ public class ClubController {
     private final ClubService clubService;
 
     @PostMapping
-    public StringResponse createClub(@RequestPart ClubSaveRequest request, MultipartFile img) throws IOException {
+    public StringResponse createClub(@Valid @RequestPart ClubSaveRequest request, MultipartFile img) throws IOException {
         Long cid = clubService.createClub(request, img);
 
         return new StringResponse("새로운 모임이 결성되었습니다. 클럽 ID: " + cid.toString());

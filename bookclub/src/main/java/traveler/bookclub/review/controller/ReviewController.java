@@ -1,5 +1,6 @@
 package traveler.bookclub.review.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public StringResponse createReview(@RequestPart ReviewSaveRequest request, MultipartFile img) throws IOException {
+    public StringResponse createReview(@Valid @RequestPart ReviewSaveRequest request, MultipartFile img) throws IOException {
         Long reviewId = reviewService.saveReview(request, img);
         return new StringResponse("리뷰를 성공적으로 저장했습니다. 리뷰 ID: " + reviewId.toString());
     }
