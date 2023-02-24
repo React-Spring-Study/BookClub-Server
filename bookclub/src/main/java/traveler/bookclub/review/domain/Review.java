@@ -45,4 +45,11 @@ public class Review extends BaseTimeEntity {
         this.club = club;
         this.member = member;
     }
+
+    public Review updateReview(String title, String content, BookInfo book) {
+        this.title = title;
+        this.content = content;
+        this.book = book;
+        return this;
+    }
 }

@@ -13,13 +13,10 @@ import traveler.bookclub.club.service.ClubService;
 import traveler.bookclub.common.util.S3Service;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
-import traveler.bookclub.review.dto.MyReviewListDto;
-import traveler.bookclub.review.dto.ReviewListDto;
+import traveler.bookclub.review.dto.*;
 import traveler.bookclub.review.exception.ReviewErrorCode;
 import traveler.bookclub.review.repository.ReviewRepository;
 import traveler.bookclub.review.domain.Review;
-import traveler.bookclub.review.dto.ReviewInfoResponse;
-import traveler.bookclub.review.dto.ReviewSaveRequest;
 import traveler.bookclub.review.exception.ReviewException;
 
 import java.util.List;
@@ -71,5 +68,31 @@ public class ReviewService {
         clubService.verifyClubMember(member, review.getClub().getId());
 
         return ReviewInfoResponse.toDto(review);
+    }
+
+    @Transactional
+    public void updateReview(ReviewUpdateRequest request, MultipartFile img) {
+        Member member = memberService.findCurrentMember();
+        Review target = reviewRepository.findById(request.getReviewId())
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
+        // 수정 권한 검사 후 수정
+        verifyReviewWriter(member, target);
+        request.updateReview(target);
+
+        // 첨부이미지 수정
+        String url = target.getImgUrl();
+        if(! img.isEmpty()) {
+            target.setImgUrl(s3Service.uploadReviewImage(img));
+        } else if (url!=null) {
+            // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
+            s3Service.deleteImage(url);
+            target.setImgUrl(null);
+        }
+    }
+
+    private void verifyReviewWriter(Member member, Review review) {
+        if (! member.equals(review.getMember()))
+            throw new ReviewException(ReviewErrorCode.REVIEW_WRITER_AUTH);
+        return;
     }
 }

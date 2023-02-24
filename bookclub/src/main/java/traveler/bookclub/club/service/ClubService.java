@@ -33,13 +33,13 @@ public class ClubService {
     @Transactional
     public Long createClub(ClubSaveRequest request, MultipartFile multipartFile){
         Member member = memberService.findCurrentMember();
-        Club club = ClubSaveRequest.toEntity(request, member);
+        Club club = clubRepository.save(ClubSaveRequest.toEntity(request, member));
         String url = null;
         if (! multipartFile.isEmpty())
-            url = s3Service.uploadClubImage(club, multipartFile);
+            url = s3Service.uploadClubImage(club.getId(), multipartFile);
         club.setImgUrl(url);
         addClubMember(member, club);
-        return clubRepository.save(club).getId();
+        return club.getId();
     }
 
     @Transactional(readOnly = true)
@@ -83,13 +83,13 @@ public class ClubService {
 
         String url = club.getImgUrl();
 
-        // 1. 프로필 이미지 수정
+        // 대표 이미지 수정
         if (! img.isEmpty()) {
             // 일단 입력이 있으면 업로드. 기존 이미지 있어도 overwrite
-            club.setImgUrl(s3Service.uploadClubImage(club, img));
+            club.setImgUrl(s3Service.uploadClubImage(club.getId(), img));
         } else if (url!=null) {
             // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
-            s3Service.deleteClubImage(url);
+            s3Service.deleteImage(url);
             club.setImgUrl(null);
         }
 

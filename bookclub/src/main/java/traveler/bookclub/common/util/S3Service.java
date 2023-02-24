@@ -29,10 +29,10 @@ public class S3Service {
     private String bucket;
 
     @Transactional
-    public String uploadClubImage(Club club, MultipartFile multipartFile) {
+    public String uploadClubImage(Long clubId, MultipartFile multipartFile) {
         String originalFilename = multipartFile.getOriginalFilename();
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        String storeFileName = "club" + club.getId().toString() + "." + ext;
+        String storeFileName = "club" + clubId.toString() + "." + ext;
         String key = "clubs/" + storeFileName;
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
@@ -63,7 +63,7 @@ public class S3Service {
     }
 
     @Transactional
-    public void deleteClubImage(String key) {
+    public void deleteImage(String key) {
         try{
             amazonS3Client.deleteObject(bucket, key.substring(52));
         } catch (Exception ex) {
