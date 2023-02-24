@@ -46,10 +46,10 @@ public class S3Service {
     }
 
     @Transactional
-    public String uploadReviewImage(MultipartFile multipartFile) {
+    public String uploadReviewImage(Long reviewId, MultipartFile multipartFile) {
         String originalFilename = multipartFile.getOriginalFilename();
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        String storeFileName = UUID.randomUUID() + "." + ext;
+        String storeFileName = "review" + reviewId.toString() + "." + ext;
         String key = "reviews/" + storeFileName;
 
         try (InputStream inputStream = multipartFile.getInputStream()) {

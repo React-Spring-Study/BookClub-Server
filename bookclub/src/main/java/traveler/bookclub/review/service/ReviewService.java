@@ -36,12 +36,12 @@ public class ReviewService {
         Club club = clubRepository.findById(request.getClubId())
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
         clubService.verifyClubMember(member, request.getClubId());
+        Review review = reviewRepository.save(ReviewSaveRequest.toEntity(request, member, club));
         String url = null;
         if (! multipartFile.isEmpty())
-            url = s3Service.uploadReviewImage(multipartFile);
-        Review entity = ReviewSaveRequest.toEntity(request, member, club);
-        entity.setImgUrl(url);
-        return reviewRepository.save(entity).getId();
+            url = s3Service.uploadReviewImage(review.getId(), multipartFile);
+        review.setImgUrl(url);
+        return review.getId();
     }
 
     @Transactional(readOnly = true)
@@ -82,7 +82,7 @@ public class ReviewService {
         // 첨부이미지 수정
         String url = target.getImgUrl();
         if(! img.isEmpty()) {
-            target.setImgUrl(s3Service.uploadReviewImage(img));
+            target.setImgUrl(s3Service.uploadReviewImage(target.getId(), img));
         } else if (url!=null) {
             // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
             s3Service.deleteImage(url);
