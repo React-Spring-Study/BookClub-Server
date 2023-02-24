@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClubInfoResponse {
 
+    private Long clubId;
     private String name;
     private String hostName;
     private String imgUrl;
@@ -29,6 +30,7 @@ public class ClubInfoResponse {
 
     public static ClubInfoResponse of(Club club) {
         return new ClubInfoResponse(
+                club.getId(),
                 club.getName(),
                 club.getHost().getNickname(),
                 club.getImgUrl(),

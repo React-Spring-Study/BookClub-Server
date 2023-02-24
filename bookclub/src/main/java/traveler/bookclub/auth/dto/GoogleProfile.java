@@ -1,9 +1,6 @@
 package traveler.bookclub.auth.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Map;
 
@@ -13,6 +10,8 @@ import java.util.Map;
 public class GoogleProfile {
 
     private String id;
+
+    @Setter
     private String name;
     private String email;
     private String imgUrl;

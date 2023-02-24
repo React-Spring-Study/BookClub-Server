@@ -7,9 +7,11 @@ import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.review.domain.Review;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Repository> {
 
+    Optional<Comment> findById(Long commentId);
     List<Comment> findAllByReview(Review review);
     List<Comment> findAllByMember(Member member);
 }

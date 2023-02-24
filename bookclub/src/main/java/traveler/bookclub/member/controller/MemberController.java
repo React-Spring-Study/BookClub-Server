@@ -4,14 +4,17 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import traveler.bookclub.auth.dto.AuthInfo;
+import traveler.bookclub.auth.dto.JoinRequest;
 import traveler.bookclub.auth.dto.LoginRequest;
 import traveler.bookclub.auth.dto.TokenDto;
 import traveler.bookclub.auth.service.AuthService;
+import traveler.bookclub.common.response.StringResponse;
 import traveler.bookclub.member.dto.MemberInfoResponse;
+import traveler.bookclub.member.dto.MemberUpdateDto;
 import traveler.bookclub.member.service.MemberService;
 
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/members")
 @RestController
 public class MemberController {
 
@@ -19,8 +22,8 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/join")
-    public TokenDto join(@Valid @RequestBody LoginRequest request) {
-        AuthInfo authInfo = authService.signUp(request.getToken());
+    public TokenDto join(@Valid @RequestBody JoinRequest request) {
+        AuthInfo authInfo = authService.signUp(request);
         return new TokenDto(authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
     }
 
@@ -39,5 +42,11 @@ public class MemberController {
     @GetMapping("/me")
     public MemberInfoResponse readMe() {
         return memberService.showMe();
+    }
+
+    @PutMapping("/me")
+    public StringResponse changeNickname(@Valid @RequestBody MemberUpdateDto form) {
+        String newName = memberService.updateMyName(form);
+        return new StringResponse("닉네임을 성공적으로 수정하였습니다. 변경된 닉네임: " + newName);
     }
 }

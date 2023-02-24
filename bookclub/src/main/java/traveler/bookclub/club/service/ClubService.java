@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.club.dto.ClubInfoResponse;
 import traveler.bookclub.club.dto.ClubSaveRequest;
+import traveler.bookclub.club.dto.ClubUpdateRequest;
 import traveler.bookclub.club.exception.ClubErrorCode;
 import traveler.bookclub.club.exception.ClubException;
 import traveler.bookclub.club.repository.ClubRepository;
@@ -15,9 +16,8 @@ import traveler.bookclub.clubMember.ClubMemberRepository;
 import traveler.bookclub.clubMember.ClubMemberResponse;
 import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.service.MemberService;
-import traveler.bookclub.review.service.S3Service;
+import traveler.bookclub.common.util.S3Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,14 +31,15 @@ public class ClubService {
     private final S3Service s3Service;
 
     @Transactional
-    public Long createClub(ClubSaveRequest request, MultipartFile multipartFile) throws IOException {
+    public Long createClub(ClubSaveRequest request, MultipartFile multipartFile){
         Member member = memberService.findCurrentMember();
+        Club club = clubRepository.save(ClubSaveRequest.toEntity(request, member));
         String url = null;
         if (! multipartFile.isEmpty())
-            url = s3Service.uploadClubImage(multipartFile);
-        Club club = ClubSaveRequest.toEntity(request, member, url);
+            url = s3Service.uploadClubImage(club.getId(), multipartFile);
+        club.setImgUrl(url);
         addClubMember(member, club);
-        return clubRepository.save(club).getId();
+        return club.getId();
     }
 
     @Transactional(readOnly = true)
@@ -48,18 +49,64 @@ public class ClubService {
         return ClubInfoResponse.of(club);
     }
 
-    @Transactional(readOnly = true)
-    public void verifyClubMember(Member member, Long cid) {
-        clubMemberRepository.findByMemberAndClub_Id(member, cid)
-                .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NO_AUTH));
-    }
-
     @Transactional
     public void joinClub(Long cid) {
         Member member = memberService.findCurrentMember();
         Club club = clubRepository.findById(cid)
                 .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
         addClubMember(member, club);
+    }
+
+    @Transactional
+    public List<ClubMemberResponse> readMyClubs() {
+        Member currentMember = memberService.findCurrentMember();
+        List<ClubMemberResponse> objects = new ArrayList<>();
+        for (ClubMember entity : currentMember.getClubs()) {
+            Club club = clubRepository.findById(entity.getClub().getId())
+                    .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+            objects.add(ClubMemberResponse.toDto(club));
+        }
+        return objects;
+    }
+
+    @Transactional
+    public void updateClub(Long id, ClubUpdateRequest request, MultipartFile img) {
+        if (! verifyClubHost(memberService.findCurrentMember(), id)) // 호스트 권한 확인
+            throw new ClubException(ClubErrorCode.CLUB_NO_AUTH);
+        Club club = clubRepository.findById(id).orElseThrow(
+                () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
+        );
+
+        // 최대 인원이 현재 인원보다 작지 않은지 확인
+        if (request.getMax() < club.getNum())
+            throw new ClubException(ClubErrorCode.CLUB_MAX_TOO_SMALL);
+
+        String url = club.getImgUrl();
+
+        // 대표 이미지 수정
+        if (! img.isEmpty()) {
+            // 일단 입력이 있으면 업로드. 기존 이미지 있어도 overwrite
+            club.setImgUrl(s3Service.uploadClubImage(club.getId(), img));
+        } else if (url!=null) {
+            // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
+            s3Service.deleteImage(url);
+            club.setImgUrl(null);
+        }
+
+        club.updateClub(request.getName(), request.getInformation(), request.getMax(), request.getLink());
+
+    }
+
+    public void verifyClubMember(Member member, Long cid) {
+        clubMemberRepository.findByMemberAndClub_Id(member, cid)
+                .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NO_AUTH));
+    }
+
+    public boolean verifyClubHost(Member member, Long cid) {
+        Club club = clubRepository.findById(cid).orElseThrow(
+                () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
+        );
+        return club.getHost().equals(member);
     }
 
     private void addClubMember(Member member, Club club) {
@@ -77,15 +124,5 @@ public class ClubService {
         clubMemberRepository.save(clubMember);
     }
 
-    @Transactional
-    public List<ClubMemberResponse> readMyClubs() {
-        Member currentMember = memberService.findCurrentMember();
-        List<ClubMemberResponse> objects = new ArrayList<>();
-        for (ClubMember entity : currentMember.getClubs()) {
-            Club club = clubRepository.findById(entity.getClub().getId())
-                    .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
-            objects.add(ClubMemberResponse.toDto(club));
-        }
-        return objects;
-    }
+
 }

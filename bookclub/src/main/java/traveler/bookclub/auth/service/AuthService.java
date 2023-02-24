@@ -20,6 +20,7 @@ import traveler.bookclub.auth.domain.CustomUserDetails;
 import traveler.bookclub.auth.domain.MemberRefreshToken;
 import traveler.bookclub.auth.dto.AuthInfo;
 import traveler.bookclub.auth.dto.GoogleProfile;
+import traveler.bookclub.auth.dto.JoinRequest;
 import traveler.bookclub.auth.dto.TokenDto;
 import traveler.bookclub.auth.exception.AuthErrorCode;
 import traveler.bookclub.auth.exception.AuthException;
@@ -50,7 +51,7 @@ public class AuthService {
     private static final String SOCIAL_PW = "social1234";
 
     @Transactional
-    public AuthInfo testLogin() {
+    public AuthInfo testLogin1() {
         GoogleProfile googleProfile = new GoogleProfile(
                 "namjihyunTest", "남지현", "helloworld@gmail.com", "http://s3lksdfasdflkds"
         );
@@ -59,23 +60,28 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthInfo signUp(String token) {
-        GoogleProfile profile = getProfileByToken(token);
-        if (memberService.verifyMember(profile.getId()))
-            throw new MemberException(MemberErrorCode.MEMBER_DUPLICATED); // 이미 가입된 멤버 회원가입 불가
+    public AuthInfo testLogin2() {
+        GoogleProfile googleProfile = new GoogleProfile(
+                "springTest", "스프링", "helloSpring@naver.com", "http://s3dfrhhyjsdgawfefsd"
+        );
+        memberService.createMember(googleProfile);
+        return new AuthInfo(createAuth(googleProfile), setRefreshToken(googleProfile));
+    }
+
+    @Transactional
+    public AuthInfo signUp(JoinRequest request) {
+        GoogleProfile profile = joinProcess(request.getNickname(), getProfileByToken(request.getToken()));
         return new AuthInfo(createAuth(profile), setRefreshToken(profile));
     }
 
     @Transactional
     public AuthInfo login(String token) {
-        GoogleProfile profile = getProfileByToken(token);
-        // 이미 가입되어 있으면 Member Exception
-        memberService.findMemberByUsername(profile.getId());
+        GoogleProfile profile = loginProcess(getProfileByToken(token));
         return new AuthInfo(createAuth(profile), setRefreshToken(profile));
     }
 
 
-    private GoogleProfile getProfileByToken(String token) {
+    private Map getProfileByToken(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
         String url = "https://www.googleapis.com/oauth2/v2/userinfo";
@@ -84,14 +90,13 @@ public class AuthService {
         try {
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, request, String.class);
             if (response.getStatusCode() == HttpStatus.OK) {
-                Map profile = gson.fromJson(response.getBody(), HashMap.class);
-                return this.process(profile);
+                return gson.fromJson(response.getBody(), HashMap.class);
             }
         } catch (Exception e) {
             log.error(e.toString());
-            throw new RuntimeException("exception!!");
+            throw new AuthException(AuthErrorCode.GOOGLE_SERVER_FAILED);
         }
-        throw new RuntimeException("!!!");
+        throw new AuthException(AuthErrorCode.GOOGLE_SERVER_FAILED);
     }
 
     @Transactional
@@ -147,16 +152,30 @@ public class AuthService {
         return new AuthInfo(newAccessToken, memberRefreshToken);
     }
 
-    private GoogleProfile process(Map<String, Object> attributes) {
-        // TODO:
-        GoogleProfile profile = GoogleProfile.toProfile(attributes);
-        Member savedMember = memberService.findMemberByUsername(profile.getId());
+    private GoogleProfile joinProcess(String nickname, Map<String, Object> attributes) {
 
-        if (savedMember != null) {
-            memberService.updateMember(savedMember, profile);
-        } else {
+        if (memberService.verifyMember((String) attributes.get("id")))
+            throw new MemberException(MemberErrorCode.MEMBER_DUPLICATED); // 이미 가입된 멤버 회원가입 불가
+
+        GoogleProfile profile = GoogleProfile.toProfile(attributes); // 구글에서 받아온 이름으로 우선 지정
+        profile.setName(nickname!=null? nickname : profile.getName()); // 사용자가 지정한 닉네임으로 수정
+
+        if (memberService.findMemberByUsername(profile.getId()) == null)
             memberService.createMember(profile);
-        }
+        return profile;
+    }
+
+    private GoogleProfile loginProcess(Map<String, Object> attributes) {
+        // profile로 변환. 구글에서 받아온 이름으로 우선 지정
+        GoogleProfile profile = GoogleProfile.toProfile(attributes);
+
+        // 기존 회원인지 확인
+        Member existedMember = memberService.findMemberByUsername(profile.getId());
+
+        // 기존 닉네임으로 수정
+        profile.setName(existedMember.getNickname());
+        memberService.updateMember(existedMember, profile);
+
         return profile;
     }
 

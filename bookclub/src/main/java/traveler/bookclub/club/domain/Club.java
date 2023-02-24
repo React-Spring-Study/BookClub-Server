@@ -55,4 +55,12 @@ public class Club {
         this.imgUrl = imgUrl;
         this.host = host;
     }
+
+    public Club updateClub(String name, String information, Integer max, String link) {
+        this.name = name!=null? name : this.name;
+        this.information = information!=null? information : this.information;
+        this.max = max!=null? max : this.max;
+        this.link = link!=null? link : this.link;
+        return this;
+    }
 }

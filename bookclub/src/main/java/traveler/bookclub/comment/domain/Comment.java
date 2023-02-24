@@ -37,4 +37,9 @@ public class Comment extends BaseTimeEntity {
         this.review = review;
         this.member = member;
     }
+
+    public Comment update(String content) {
+        this.content = content;
+        return this;
+    }
 }
