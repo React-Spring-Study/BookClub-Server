@@ -15,6 +15,7 @@ public class ReviewInfoResponse {
     private String content;
     private String isbn;
     private WriterInfo writer;
+    private String imgUrl;
     private String createdDate;
 
     public static ReviewInfoResponse toDto(Review review) {
@@ -25,6 +26,7 @@ public class ReviewInfoResponse {
                 review.getContent(),
                 review.getBook().getIsbn(),
                 new WriterInfo(member.getNickname(), member.getProfileUrl()),
+                review.getImgUrl(),
                 review.getCreatedDate()
         );
     }

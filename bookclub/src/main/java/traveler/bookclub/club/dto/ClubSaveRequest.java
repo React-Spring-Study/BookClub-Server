@@ -25,7 +25,7 @@ public class ClubSaveRequest {
 
     private String link;
 
-    public static Club toEntity(ClubSaveRequest request, Member member, String imgUrl) {
+    public static Club toEntity(ClubSaveRequest request, Member member) {
         return Club.builder()
                 .name(request.name)
                 .information(request.information)
@@ -33,7 +33,6 @@ public class ClubSaveRequest {
                 .link(request.link)
                 .num(0)
                 .host(member)
-                .imgUrl(imgUrl)
                 .build();
     }
 }

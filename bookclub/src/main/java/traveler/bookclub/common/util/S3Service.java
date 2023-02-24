@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.common.exception.S3ErrorCode;
 import traveler.bookclub.common.exception.S3Exception;
 
@@ -28,10 +29,10 @@ public class S3Service {
     private String bucket;
 
     @Transactional
-    public String uploadClubImage( MultipartFile multipartFile) {
+    public String uploadClubImage(Club club, MultipartFile multipartFile) {
         String originalFilename = multipartFile.getOriginalFilename();
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
-        String storeFileName = UUID.randomUUID() + "." + ext;
+        String storeFileName = "club" + club.getId().toString() + "." + ext;
         String key = "clubs/" + storeFileName;
 
         try (InputStream inputStream = multipartFile.getInputStream()) {

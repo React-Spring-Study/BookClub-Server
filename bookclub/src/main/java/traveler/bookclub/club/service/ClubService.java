@@ -33,10 +33,11 @@ public class ClubService {
     @Transactional
     public Long createClub(ClubSaveRequest request, MultipartFile multipartFile){
         Member member = memberService.findCurrentMember();
+        Club club = ClubSaveRequest.toEntity(request, member);
         String url = null;
         if (! multipartFile.isEmpty())
-            url = s3Service.uploadClubImage(multipartFile);
-        Club club = ClubSaveRequest.toEntity(request, member, url);
+            url = s3Service.uploadClubImage(club, multipartFile);
+        club.setImgUrl(url);
         addClubMember(member, club);
         return clubRepository.save(club).getId();
     }
@@ -81,12 +82,17 @@ public class ClubService {
             throw new ClubException(ClubErrorCode.CLUB_MAX_TOO_SMALL);
 
         String url = club.getImgUrl();
-        // 이미지를 바꾸려고 할 때
+
+        // 1. 프로필 이미지 수정
         if (! img.isEmpty()) {
-            if (url != null)    // 원래 이미지가 있으면
-                s3Service.deleteClubImage(url);
-            club.setImgUrl(s3Service.uploadClubImage(img));
+            // 일단 입력이 있으면 업로드. 기존 이미지 있어도 overwrite
+            club.setImgUrl(s3Service.uploadClubImage(club, img));
+        } else if (url!=null) {
+            // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
+            s3Service.deleteClubImage(url);
+            club.setImgUrl(null);
         }
+
         club.updateClub(request.getName(), request.getInformation(), request.getMax(), request.getLink());
 
     }
