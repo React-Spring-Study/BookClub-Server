@@ -16,7 +16,8 @@ public enum AuthErrorCode {
     INVALID_TOKEN_SIGNATURE("토큰의 서명이 유효하지 않습니다."),
     EXPIRED_JWT_TOKEN("토큰이 만료되었습니다."),
     UNSUPPORTED_JWT_TOKEN("지원하지 않는 토큰 형식입니다."),
-    CREDENTIAL_MISS_MATCH("아이디 또는 비밀번호가 틀렸습니다.");
+    CREDENTIAL_MISS_MATCH("아이디 또는 비밀번호가 틀렸습니다."),
+    GOOGLE_SERVER_FAILED("구글 서버 통신에 실패했습니다.");
 
     private String defaultMessage;
 }

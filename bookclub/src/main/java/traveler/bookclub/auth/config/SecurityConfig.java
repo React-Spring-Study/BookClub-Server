@@ -83,7 +83,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests()
-                .requestMatchers("/member/join", "/member/login", "/member/reissue",
+                .requestMatchers("/members/join", "/members/login", "/members/reissue",
                         "/health", "/test-login**").permitAll()
                 .anyRequest().authenticated()
                 .and()

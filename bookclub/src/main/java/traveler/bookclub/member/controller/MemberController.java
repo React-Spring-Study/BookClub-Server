@@ -14,7 +14,7 @@ import traveler.bookclub.member.dto.MemberUpdateDto;
 import traveler.bookclub.member.service.MemberService;
 
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/members")
 @RestController
 public class MemberController {
 

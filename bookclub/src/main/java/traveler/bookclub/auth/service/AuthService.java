@@ -94,9 +94,9 @@ public class AuthService {
             }
         } catch (Exception e) {
             log.error(e.toString());
-            throw new RuntimeException("exception!!");
+            throw new AuthException(AuthErrorCode.GOOGLE_SERVER_FAILED);
         }
-        throw new RuntimeException("!!!");
+        throw new AuthException(AuthErrorCode.GOOGLE_SERVER_FAILED);
     }
 
     @Transactional
