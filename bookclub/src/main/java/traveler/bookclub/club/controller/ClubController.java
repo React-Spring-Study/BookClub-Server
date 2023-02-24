@@ -13,7 +13,7 @@ import traveler.bookclub.common.response.StringResponse;
 
 import java.util.List;
 
-@RequestMapping("/club")
+@RequestMapping("/clubs")
 @RequiredArgsConstructor
 @RestController
 public class ClubController {

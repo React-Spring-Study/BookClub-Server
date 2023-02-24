@@ -12,7 +12,7 @@ import traveler.bookclub.common.response.StringResponse;
 
 import java.util.List;
 
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @RequiredArgsConstructor
 @RestController
 public class CommentController {
