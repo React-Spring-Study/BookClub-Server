@@ -10,13 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import traveler.bookclub.club.domain.Club;
 import traveler.bookclub.common.exception.S3ErrorCode;
 import traveler.bookclub.common.exception.S3Exception;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 @Slf4j
 @Service
