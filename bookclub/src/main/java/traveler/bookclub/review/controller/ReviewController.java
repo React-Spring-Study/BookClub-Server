@@ -40,8 +40,14 @@ public class ReviewController {
     }
 
     @PutMapping
-    public StringResponse updateReview(@RequestPart ReviewUpdateRequest request, MultipartFile img) {
-        reviewService.updateReview(request, img);
+    public StringResponse updateReview(@RequestBody ReviewUpdateRequest request) {
+        reviewService.updateReview(request);
         return new StringResponse("리뷰를 수정하였습니다.");
+    }
+
+    @PutMapping("/{reviewId}")
+    public StringResponse updateReviewImage(@PathVariable Long reviewId, MultipartFile img) {
+        reviewService.updateReviewImage(reviewId, img);
+        return new StringResponse("리뷰 이미지를 수정하였습니다.");
     }
 }

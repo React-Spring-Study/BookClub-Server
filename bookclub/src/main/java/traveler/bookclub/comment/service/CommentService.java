@@ -75,9 +75,16 @@ public class CommentService {
 
     @Transactional
     public void updateComment(CommentUpdateRequest request) {
+        Member me = memberService.findCurrentMember();
         Comment comment = commentRepository.findById(request.getCommentId()).orElseThrow(
                 () -> new CommentException(CommentErrorCode.COMMENT_NOT_FOUND)
         );
+        verifyCommentWriter(me, comment);
         comment.update(request.getContent());
+    }
+
+    private void verifyCommentWriter(Member member, Comment comment) {
+        if (! member.equals(comment.getMember()))
+            throw new CommentException(CommentErrorCode.COMMENT_NO_AUTH);
     }
 }
