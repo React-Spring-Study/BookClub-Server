@@ -70,10 +70,10 @@ public class ClubService {
     }
 
     @Transactional
-    public void updateClub(Long id, ClubUpdateRequest request, MultipartFile img) {
-        if (! verifyClubHost(memberService.findCurrentMember(), id)) // 호스트 권한 확인
+    public void updateClub(ClubUpdateRequest request, MultipartFile img) {
+        if (! verifyClubHost(memberService.findCurrentMember(), request.getClubId())) // 호스트 권한 확인
             throw new ClubException(ClubErrorCode.CLUB_NO_AUTH);
-        Club club = clubRepository.findById(id).orElseThrow(
+        Club club = clubRepository.findById(request.getClubId()).orElseThrow(
                 () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
         );
 

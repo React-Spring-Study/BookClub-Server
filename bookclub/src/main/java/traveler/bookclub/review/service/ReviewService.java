@@ -71,13 +71,27 @@ public class ReviewService {
     }
 
     @Transactional
-    public void updateReview(ReviewUpdateRequest request, MultipartFile img) {
+    public void updateReview(ReviewUpdateRequest request) {
         Member member = memberService.findCurrentMember();
         Review target = reviewRepository.findById(request.getReviewId())
                 .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
         // 수정 권한 검사 후 수정
         verifyReviewWriter(member, target);
         request.updateReview(target);
+    }
+
+    /**
+     * 요청 받은대로 수정
+     *  img 있을 경우 해당 img set
+     *  img 없을 경우 기존 img 삭제
+     * */
+    @Transactional
+    public void updateReviewImage(Long reviewId, MultipartFile img) {
+        Member member = memberService.findCurrentMember();
+        Review target = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
+        // 수정 권한 검사
+        verifyReviewWriter(member, target);
 
         // 첨부이미지 수정
         String url = target.getImgUrl();

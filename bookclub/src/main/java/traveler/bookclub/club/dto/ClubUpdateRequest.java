@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClubUpdateRequest {
 
+    private Long clubId;
+
     private String name;
 
     private String information;
