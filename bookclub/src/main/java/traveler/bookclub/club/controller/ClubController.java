@@ -44,8 +44,14 @@ public class ClubController {
     }
 
     @PutMapping
-    public StringResponse updateClub(@Valid @RequestPart ClubUpdateRequest request, MultipartFile img) {
-        clubService.updateClub(request, img);
+    public StringResponse updateClub(@Valid @RequestBody ClubUpdateRequest request) {
+        clubService.updateClub(request);
         return new StringResponse("클럽 정보를 성공적으로 수정하였습니다.");
+    }
+
+    @PutMapping("/{clubId}")
+    public StringResponse updateClubImage(@PathVariable Long clubId, MultipartFile img) {
+        clubService.updateClubImage(clubId, img);
+        return new StringResponse("클럽 대표 사진을 수정하였습니다.");
     }
 }

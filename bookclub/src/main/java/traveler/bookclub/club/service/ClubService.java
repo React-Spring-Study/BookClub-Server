@@ -70,7 +70,7 @@ public class ClubService {
     }
 
     @Transactional
-    public void updateClub(ClubUpdateRequest request, MultipartFile img) {
+    public void updateClub(ClubUpdateRequest request) {
         if (! verifyClubHost(memberService.findCurrentMember(), request.getClubId())) // 호스트 권한 확인
             throw new ClubException(ClubErrorCode.CLUB_NO_AUTH);
         Club club = clubRepository.findById(request.getClubId()).orElseThrow(
@@ -81,8 +81,19 @@ public class ClubService {
         if (request.getMax() < club.getNum())
             throw new ClubException(ClubErrorCode.CLUB_MAX_TOO_SMALL);
 
-        String url = club.getImgUrl();
+        club.updateClub(request.getName(), request.getInformation(), request.getMax(), request.getLink());
 
+    }
+
+    @Transactional
+    public void updateClubImage(Long clubId, MultipartFile img) {
+        if (! verifyClubHost(memberService.findCurrentMember(), clubId)) // 호스트 권한 확인
+            throw new ClubException(ClubErrorCode.CLUB_NO_AUTH);
+        Club club = clubRepository.findById(clubId).orElseThrow(
+                () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
+        );
+
+        String url = club.getImgUrl();
         // 대표 이미지 수정
         if (! img.isEmpty()) {
             // 일단 입력이 있으면 업로드. 기존 이미지 있어도 overwrite
@@ -92,9 +103,6 @@ public class ClubService {
             s3Service.deleteImage(url);
             club.setImgUrl(null);
         }
-
-        club.updateClub(request.getName(), request.getInformation(), request.getMax(), request.getLink());
-
     }
 
     public void verifyClubMember(Member member, Long cid) {
