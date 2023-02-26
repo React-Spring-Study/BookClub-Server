@@ -24,19 +24,19 @@ public class MemberController {
     @PostMapping("/join")
     public TokenDto join(@Valid @RequestBody JoinRequest request) {
         AuthInfo authInfo = authService.signUp(request);
-        return new TokenDto(authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
+        return new TokenDto(authInfo.getMemberId(), authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
     }
 
     @PostMapping("/login")
     public TokenDto login(@Valid @RequestBody LoginRequest request) {
         AuthInfo authInfo = authService.login(request.getToken());
-        return new TokenDto(authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
+        return new TokenDto(authInfo.getMemberId(), authInfo.getAccessToken().getToken(), authInfo.getMemberRefreshToken().getRefreshToken());
     }
 
     @PostMapping("/reissue")
     public TokenDto reissue(@Valid @RequestBody TokenDto request){
         AuthInfo info = authService.reissueToken(request);
-        return new TokenDto(info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
+        return new TokenDto(request.getMemberId(), info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
     }
 
     @GetMapping("/me")
