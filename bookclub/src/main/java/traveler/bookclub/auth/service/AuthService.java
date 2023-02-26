@@ -30,6 +30,7 @@ import traveler.bookclub.member.domain.Member;
 import traveler.bookclub.member.domain.Role;
 import traveler.bookclub.member.exception.MemberErrorCode;
 import traveler.bookclub.member.exception.MemberException;
+import traveler.bookclub.member.repository.MemberRepository;
 import traveler.bookclub.member.service.MemberService;
 
 import java.util.Date;
@@ -41,6 +42,7 @@ import java.util.Map;
 @Service
 public class AuthService {
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RestTemplate restTemplate;
     private final Gson gson;
     private final AuthTokenProvider tokenProvider;
@@ -160,7 +162,7 @@ public class AuthService {
         GoogleProfile profile = GoogleProfile.toProfile(attributes); // 구글에서 받아온 이름으로 우선 지정
         profile.setName(nickname!=null? nickname : profile.getName()); // 사용자가 지정한 닉네임으로 수정
 
-        if (memberService.findMemberByUsername(profile.getId()) == null)
+        if (memberRepository.findByUsername(profile.getId()).isEmpty())
             memberService.createMember(profile);
         return profile;
     }
