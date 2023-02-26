@@ -58,7 +58,7 @@ public class AuthService {
                 "namjihyunTest", "남지현", "helloworld@gmail.com", "http://s3lksdfasdflkds"
         );
         memberService.createMember(googleProfile);
-        return new AuthInfo(createAuth(googleProfile), setRefreshToken(googleProfile));
+        return new AuthInfo(1L, createAuth(googleProfile), setRefreshToken(googleProfile));
     }
 
     @Transactional
@@ -67,19 +67,19 @@ public class AuthService {
                 "springTest", "스프링", "helloSpring@naver.com", "http://s3dfrhhyjsdgawfefsd"
         );
         memberService.createMember(googleProfile);
-        return new AuthInfo(createAuth(googleProfile), setRefreshToken(googleProfile));
+        return new AuthInfo(2L,createAuth(googleProfile), setRefreshToken(googleProfile));
     }
 
     @Transactional
     public AuthInfo signUp(JoinRequest request) {
         GoogleProfile profile = joinProcess(request.getNickname(), getProfileByToken(request.getToken()));
-        return new AuthInfo(createAuth(profile), setRefreshToken(profile));
+        return new AuthInfo(profile.getMemberId(), createAuth(profile), setRefreshToken(profile));
     }
 
     @Transactional
     public AuthInfo login(String token) {
         GoogleProfile profile = loginProcess(getProfileByToken(token));
-        return new AuthInfo(createAuth(profile), setRefreshToken(profile));
+        return new AuthInfo(profile.getMemberId(), createAuth(profile), setRefreshToken(profile));
     }
 
 
@@ -151,7 +151,7 @@ public class AuthService {
             memberRefreshToken.setRefreshToken(refreshToken.getToken());
         }
 
-        return new AuthInfo(newAccessToken, memberRefreshToken);
+        return new AuthInfo(dto.getMemberId(), newAccessToken, memberRefreshToken);
     }
 
     private GoogleProfile joinProcess(String nickname, Map<String, Object> attributes) {
@@ -162,8 +162,10 @@ public class AuthService {
         GoogleProfile profile = GoogleProfile.toProfile(attributes); // 구글에서 받아온 이름으로 우선 지정
         profile.setName(nickname!=null? nickname : profile.getName()); // 사용자가 지정한 닉네임으로 수정
 
-        if (memberRepository.findByUsername(profile.getId()).isEmpty())
-            memberService.createMember(profile);
+        if (memberRepository.findByUsername(profile.getId()).isEmpty()) {
+            Long memberId = memberService.createMember(profile);
+            profile.setMemberId(memberId);
+        }
         return profile;
     }
 
@@ -177,6 +179,7 @@ public class AuthService {
         // 기존 닉네임으로 수정
         profile.setName(existedMember.getNickname());
         memberService.updateMember(existedMember, profile);
+        profile.setMemberId(existedMember.getId());
 
         return profile;
     }

@@ -20,13 +20,13 @@ public class ApiController {
     @PostMapping("/test-login1")
     public TokenDto testLogin() {
         AuthInfo info = authService.testLogin1();
-        return new TokenDto(info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
+        return new TokenDto(info.getMemberId(), info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
     }
 
     @PostMapping("/test-login2")
     public TokenDto testLoginV2() {
         AuthInfo info = authService.testLogin2();
-        return new TokenDto(info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
+        return new TokenDto(info.getMemberId(), info.getAccessToken().getToken(), info.getMemberRefreshToken().getRefreshToken());
     }
 
     @GetMapping("/test-request")

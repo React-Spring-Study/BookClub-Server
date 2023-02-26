@@ -49,7 +49,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member createMember(GoogleProfile profile) {
+    public Long createMember(GoogleProfile profile) {
         Member newUser = Member.builder()
                 .nickname(profile.getName())
                 .email(profile.getEmail())
@@ -58,7 +58,7 @@ public class MemberService {
                 .username(profile.getId())
                 .build();
 
-        return memberRepository.save(newUser);
+        return memberRepository.save(newUser).getId();
     }
 
     @Transactional(readOnly = true)
