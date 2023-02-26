@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TokenDto {
 
+    private Long memberId;
     private String accessToken;
     private String refreshToken;
 }

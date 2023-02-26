@@ -12,6 +12,7 @@ import traveler.bookclub.auth.domain.MemberRefreshToken;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthInfo {
 
+    private Long memberId;
     private AuthToken accessToken;
     private MemberRefreshToken memberRefreshToken;
 }
