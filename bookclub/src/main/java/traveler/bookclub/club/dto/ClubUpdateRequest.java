@@ -1,6 +1,7 @@
 package traveler.bookclub.club.dto;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class ClubUpdateRequest {
 
     private Long clubId;
 
+    @NotBlank
     private String name;
 
     private String information;
