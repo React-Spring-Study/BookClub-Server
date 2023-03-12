@@ -19,6 +19,7 @@ public class ClubInfoResponse {
     private String name;
     private String hostName;
     private String imgUrl;
+    private String information;
     private Integer max;
     private Integer num;
     private List<String> members;
@@ -34,6 +35,7 @@ public class ClubInfoResponse {
                 club.getName(),
                 club.getHost().getNickname(),
                 club.getImgUrl(),
+                club.getInformation(),
                 club.getMax(),
                 club.getNum(),
                 toNameList(club.getMembers())
