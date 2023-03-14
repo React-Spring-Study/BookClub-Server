@@ -96,9 +96,11 @@ public class ClubService {
         String url = club.getImgUrl();
         // 대표 이미지 수정
         if (! img.isEmpty()) {
+            if (url != null)
+                s3Service.deleteImage(url);
             // 일단 입력이 있으면 업로드. 기존 이미지 있어도 overwrite
             club.setImgUrl(s3Service.uploadClubImage(club.getId(), img));
-        } else if (url!=null) {
+        } else if (url != null) {
             // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
             s3Service.deleteImage(url);
             club.setImgUrl(null);

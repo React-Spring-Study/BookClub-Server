@@ -72,7 +72,7 @@ public class S3Service {
 
     private ObjectMetadata setMetaData(MultipartFile multipartFile) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(multipartFile.getContentType());
+        objectMetadata.setContentType("img/png");
         objectMetadata.setContentLength(multipartFile.getSize());
 
         return objectMetadata;
