@@ -96,6 +96,8 @@ public class ReviewService {
         // 첨부이미지 수정
         String url = target.getImgUrl();
         if(! img.isEmpty()) {
+            if (url != null)
+                s3Service.deleteImage(url);
             target.setImgUrl(s3Service.uploadReviewImage(target.getId(), img));
         } else if (url!=null) {
             // 입력이 없는데 기존 이미지가 있었던 경우 -> 이미지 삭제
