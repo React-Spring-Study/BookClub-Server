@@ -40,6 +40,7 @@ public class S3Service {
             throw new S3Exception(S3ErrorCode.S3_UPLOAD_FAILED);
         }
 
+        log.info("type: {}", amazonS3Client.getObjectMetadata(bucket, key).getContentType());
         return amazonS3Client.getUrl(bucket, key).toString();
     }
 
@@ -72,7 +73,7 @@ public class S3Service {
 
     private ObjectMetadata setMetaData(MultipartFile multipartFile) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType("img/png");
+        objectMetadata.setContentType("image/png");
         objectMetadata.setContentLength(multipartFile.getSize());
 
         return objectMetadata;
