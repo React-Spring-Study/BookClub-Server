@@ -70,6 +70,16 @@ public class ReviewService {
         return ReviewInfoResponse.toDto(review);
     }
 
+    @Transactional(readOnly = true)
+    public List<ReviewListDto> searchReviewByBookTitle(ReviewSearchDto dto, Pageable pageable) {
+        Member member = memberService.findCurrentMember();
+        Club club = clubRepository.findById(dto.getClubId())
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
+
+        // TODO: 미완성
+        return ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
+    }
+
     @Transactional
     public void updateReview(ReviewUpdateRequest request) {
         Member member = memberService.findCurrentMember();
