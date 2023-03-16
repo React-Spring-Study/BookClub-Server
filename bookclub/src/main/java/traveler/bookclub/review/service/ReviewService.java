@@ -45,19 +45,21 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewListDto> readReviewListByClub(Long clubId, Pageable pageable) {
+    public ClubReviewPageResponse readReviewListByClub(Long clubId, Pageable pageable) {
         Member member = memberService.findCurrentMember();
         Club club = clubRepository.findById(clubId).orElseThrow(
                 () -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND)
         );
         clubService.verifyClubMember(member, clubId);
-        return ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
+        List<ReviewListDto> dtos = ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
+        return new ClubReviewPageResponse(dtos.size(), dtos);
     }
 
     @Transactional(readOnly = true)
-    public List<MyReviewListDto> readMyReviewList(Pageable pageable) {
+    public MyReviewPageResponse readMyReviewList(Pageable pageable) {
         Member me = memberService.findCurrentMember();
-        return MyReviewListDto.toMyReviewDtoList(reviewRepository.findAllByMember(me, pageable));
+        List<MyReviewListDto> dtos = MyReviewListDto.toDtoList(reviewRepository.findAllByMember(me, pageable));
+        return new MyReviewPageResponse(dtos.size(), dtos);
     }
 
     @Transactional(readOnly = true)
@@ -68,6 +70,16 @@ public class ReviewService {
         clubService.verifyClubMember(member, review.getClub().getId());
 
         return ReviewInfoResponse.toDto(review);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewListDto> searchReviewByBookTitle(ReviewSearchDto dto, Pageable pageable) {
+        Member member = memberService.findCurrentMember();
+        Club club = clubRepository.findById(dto.getClubId())
+                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
+
+        // TODO: 미완성
+        return ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
     }
 
     @Transactional

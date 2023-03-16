@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewListDto {
+public class ReviewListDto{
 
     private Long reviewId;
     private String title;
