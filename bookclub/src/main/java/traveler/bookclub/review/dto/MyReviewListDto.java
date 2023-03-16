@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MyReviewListDto {
+public class MyReviewListDto{
 
     private Long reviewId;
     private String title;
@@ -21,7 +21,7 @@ public class MyReviewListDto {
     private String isbn;
     private String createdDate;
 
-    public static List<MyReviewListDto> toMyReviewDtoList(List<Review> entityList) {
+    public static List<MyReviewListDto> toDtoList(List<Review> entityList) {
         List<MyReviewListDto> dtos = new ArrayList<>();
         for (Review review : entityList) {
             dtos.add(new MyReviewListDto(
