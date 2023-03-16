@@ -19,6 +19,7 @@ import traveler.bookclub.review.repository.ReviewRepository;
 import traveler.bookclub.review.domain.Review;
 import traveler.bookclub.review.exception.ReviewException;
 
+import java.util.ArrayList;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
@@ -73,13 +74,24 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public List<ReviewListDto> searchReviewByBookTitle(ReviewSearchDto dto, Pageable pageable) {
+    public ClubReviewPageResponse searchReviewByBook(BookReviewRequest request, Pageable pageable) {
         Member member = memberService.findCurrentMember();
-        Club club = clubRepository.findById(dto.getClubId())
-                .orElseThrow(() -> new ReviewException(ReviewErrorCode.REVIEW_NOT_FOUND));
-
-        // TODO: 미완성
-        return ReviewListDto.toDtoList(reviewRepository.findAllByClub(club, pageable));
+        Club club = clubRepository.findById(request.getClubId())
+                .orElseThrow(() -> new ClubException(ClubErrorCode.CLUB_NOT_FOUND));
+        clubService.verifyClubMember(member, request.getClubId());
+        List<Review> reviews = reviewRepository.findAllByClub(club, pageable);
+        List<ReviewListDto> result = new ArrayList<>();
+        for (Review review : reviews) {
+            if (request.getIsbn().equals(review.getBook().getIsbn()))
+                result.add(new ReviewListDto(
+                        review.getId(),
+                        review.getTitle(),
+                        review.getMember().getNickname(),
+                        review.getBook().getIsbn(),
+                        review.getCreatedDate())
+                );
+        }
+        return new ClubReviewPageResponse(result.size(), result);
     }
 
     @Transactional
