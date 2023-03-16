@@ -9,8 +9,6 @@ import traveler.bookclub.common.response.StringResponse;
 import traveler.bookclub.review.dto.*;
 import traveler.bookclub.review.service.ReviewService;
 
-import java.util.List;
-
 @RequestMapping("/reviews")
 @RequiredArgsConstructor
 @RestController
@@ -25,7 +23,7 @@ public class ReviewController {
     }
 
     @GetMapping("/club/{clubId}")
-    public List<ReviewListDto> readReviewsByCid(@PathVariable Long clubId, Pageable pageable) {
+    public ClubReviewPageResponse readReviewsByCid(@PathVariable Long clubId, Pageable pageable) {
         return reviewService.readReviewListByClub(clubId, pageable);
     }
 
@@ -35,7 +33,7 @@ public class ReviewController {
     }
 
     @GetMapping("/me")
-    public List<MyReviewListDto> readMyReviews(Pageable pageable) {
+    public MyReviewPageResponse readMyReviews(Pageable pageable) {
         return reviewService.readMyReviewList(pageable);
     }
 
