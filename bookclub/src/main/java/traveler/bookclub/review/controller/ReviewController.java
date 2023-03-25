@@ -37,7 +37,7 @@ public class ReviewController {
         return reviewService.readMyReviewList(pageable);
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ClubReviewPageResponse searchReviewByBook(@Valid @RequestBody BookReviewRequest request, Pageable pageable) {
         return reviewService.searchReviewByBook(request, pageable);
     }
