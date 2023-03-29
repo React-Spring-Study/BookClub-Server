@@ -36,6 +36,6 @@ public class ApiController {
 
     @GetMapping("/health")
     public StringResponse healthCheck() {
-        return new StringResponse("Health Check v2");
+        return new StringResponse("Health Check v3");
     }
 }
